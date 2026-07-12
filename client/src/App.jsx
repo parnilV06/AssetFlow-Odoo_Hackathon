@@ -4,6 +4,7 @@ import DashboardLayout from './layouts/DashboardLayout';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Departments from './pages/Organization/Departments';
 import Employees from './pages/Organization/Employees';
+import Categories from './pages/Categories/Categories';
 import AssetDirectory from './pages/Assets/AssetDirectory';
 import AllocateAsset from './pages/Allocation/AllocateAsset';
 import AuditCycle from './pages/Audit/AuditCycle';
@@ -13,17 +14,24 @@ import Maintenance from './pages/Maintenance/Maintenance';
 import Login from './pages/Login/Login';
 import Notifications from './pages/Notifications/Notifications';
 import Settings from './pages/Settings/Settings';
+import ProtectedRoute from './components/Common/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 import './App.css';
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/login" element={<Login />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
 
-        {/* Protected Dashboard Routes */}
-        <Route path="/" element={<DashboardLayout />}>
+          {/* Protected Dashboard Routes */}
+          <Route path="/" element={
+            <ProtectedRoute>
+              <DashboardLayout />
+            </ProtectedRoute>
+          }>
           {/* Default redirect to dashboard */}
           <Route index element={<Navigate to="/dashboard" replace />} />
           
@@ -35,6 +43,7 @@ function App() {
             <Route index element={<Navigate to="departments" replace />} />
             <Route path="departments" element={<Departments />} />
             <Route path="employees" element={<Employees />} />
+            <Route path="categories" element={<Categories />} />
           </Route>
           
           {/* Assets Route */}
@@ -64,8 +73,9 @@ function App() {
           {/* Catch all redirect */}
           <Route path="*" element={<Navigate to="/organization/departments" replace />} />
         </Route>
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 

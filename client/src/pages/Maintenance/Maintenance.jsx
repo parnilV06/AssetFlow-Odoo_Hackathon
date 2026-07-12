@@ -1,159 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchInput from '../../components/Input/SearchInput';
 import Button from '../../components/Button/Button';
 import PriorityBadge from '../../components/Status/PriorityBadge';
 import { MoreVertical, Calendar, User, ChevronDown } from 'lucide-react';
+import Modal from '../../components/Common/Modal';
+import { maintenanceService } from '../../services/maintenance';
+import { assetService } from '../../services/asset';
+import { employeeService } from '../../services/employee';
+import { useAuth } from '../../context/AuthContext';
 import './Maintenance.css';
 
-// Mock Data matching the reference image closely
-const MOCK_DATA = {
-  pending: [
-    {
-      id: '#M-1001',
-      title: 'AC Not Cooling',
-      asset: 'Meeting Room A',
-      priority: 'High',
-      date: '02 May 2025',
-      user: 'Rahul Sharma',
-      datePrefix: 'Requested on'
-    },
-    {
-      id: '#M-1002',
-      title: 'Projector Issue',
-      asset: 'Training Room 1',
-      priority: 'Medium',
-      date: '03 May 2025',
-      user: 'Priya Singh',
-      datePrefix: 'Requested on'
-    },
-    {
-      id: '#M-1003',
-      title: 'Light Flickering',
-      asset: 'Corridor - 2nd Floor',
-      priority: 'Low',
-      date: '03 May 2025',
-      user: 'Amit Patil',
-      datePrefix: 'Requested on'
-    }
-  ],
-  approved: [
-    {
-      id: '#M-1004',
-      title: 'Conference Table',
-      asset: 'Conference Room',
-      priority: 'Medium',
-      date: '01 May 2025',
-      user: 'Neha Gupta',
-      datePrefix: 'Approved on'
-    },
-    {
-      id: '#M-1005',
-      title: 'Printer Jam',
-      asset: 'Office - 2nd Floor',
-      priority: 'High',
-      date: '01 May 2025',
-      user: 'Rohit Mehta',
-      datePrefix: 'Approved on'
-    },
-    {
-      id: '#M-1006',
-      title: 'Door Handle Loose',
-      asset: 'Main Entrance',
-      priority: 'Low',
-      date: '02 May 2025',
-      user: 'Vikram Joshi',
-      datePrefix: 'Approved on'
-    }
-  ],
-  inProgress: [
-    {
-      id: '#M-1007',
-      title: 'Server Overheat',
-      asset: 'Server Room',
-      technician: 'Karan',
-      priority: 'Medium',
-      date: '02 May 2025',
-      datePrefix: 'Started on'
-    },
-    {
-      id: '#M-1008',
-      title: 'Chair Broken',
-      asset: 'Workstation 12',
-      technician: 'Suresh',
-      priority: 'High',
-      date: '02 May 2025',
-      datePrefix: 'Started on'
-    },
-    {
-      id: '#M-1009',
-      title: 'Water Leakage',
-      asset: 'Pantry Area',
-      technician: 'Imran',
-      priority: 'Medium',
-      date: '03 May 2025',
-      datePrefix: 'Started on'
-    }
-  ],
-  resolved: [
-    {
-      id: '#M-1010',
-      title: 'Wi-Fi Connectivity',
-      asset: 'Meeting Room B',
-      date: '01 May 2025',
-      user: 'Rajesh Kumar',
-      datePrefix: 'Resolved on'
-    },
-    {
-      id: '#M-1011',
-      title: 'Scanner Not Working',
-      asset: 'Admin Office',
-      date: '30 Apr 2025',
-      user: 'Sneha Iyer',
-      datePrefix: 'Resolved on'
-    },
-    {
-      id: '#M-1012',
-      title: 'Air Purifier Noise',
-      asset: 'HR Cabin',
-      date: '29 Apr 2025',
-      user: 'Amit Patil',
-      datePrefix: 'Resolved on'
-    }
-  ]
-};
-
-const MaintenanceCard = ({ data }) => {
+const MaintenanceCard = ({ data, onClickAction }) => {
   return (
-    <div className="maintenance-card">
+    <div className="maintenance-card" onClick={() => onClickAction(data)} style={{ cursor: 'pointer' }}>
       <div className="mc-header">
-        <span className="mc-id">{data.id}</span>
+        <span className="mc-id">#{data.id.substring(0, 8).toUpperCase()}</span>
         <MoreVertical size={16} className="mc-actions" />
       </div>
       
       <div className="mc-body">
-        <div className="mc-title">{data.title}</div>
-        <div className="mc-asset">{data.asset}</div>
+        <div className="mc-title" style={{ fontWeight: 'bold' }}>{data.issueDescription}</div>
+        <div className="mc-asset">{data.asset?.name || 'Unknown Asset'} ({data.asset?.assetTag})</div>
         
         {data.technician && (
-          <div className="mc-technician">Technician: {data.technician}</div>
+          <div className="mc-technician">Technician: {data.technician.name}</div>
         )}
         
-        {data.priority && (
-          <div style={{ marginTop: '10px' }}>
-            <PriorityBadge priority={data.priority} />
-          </div>
-        )}
+        <div style={{ marginTop: '10px' }}>
+          <PriorityBadge priority={data.priority} />
+        </div>
       </div>
 
       <div className="mc-footer">
         <div className="mc-date">
           <Calendar size={14} />
-          {data.datePrefix} {data.date}
+          {new Date(data.updatedAt || data.createdAt).toLocaleDateString()}
         </div>
-        {data.user && (
+        {data.requester && (
           <div className="mc-user">
             <User size={14} />
-            {data.user}
+            {data.requester.name}
           </div>
         )}
       </div>
@@ -162,7 +48,130 @@ const MaintenanceCard = ({ data }) => {
 };
 
 const Maintenance = () => {
+  const { user } = useAuth();
+  const isAdmin = ['ADMIN', 'ASSET_MANAGER'].includes(user?.role);
+  
+  const [requests, setRequests] = useState([]);
+  const [assets, setAssets] = useState([]);
+  const [technicians, setTechnicians] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMode, setModalMode] = useState('create'); // create, approve, assign, start, resolve
+  const [selectedRequest, setSelectedRequest] = useState(null);
+  
+  const [formData, setFormData] = useState({
+    assetId: '',
+    issueDescription: '',
+    priority: 'LOW',
+    expectedCost: '',
+    technicianId: '',
+    actualCost: '',
+    notes: ''
+  });
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState('');
+
+  useEffect(() => {
+    fetchRequests();
+    
+    // Load dropdown data
+    assetService.getAll({ limit: 500 }).then(res => {
+      if (res.success) setAssets(res.data.assets);
+    }).catch(console.error);
+
+    if (isAdmin) {
+      employeeService.getAll({ limit: 500 }).then(res => {
+        if (res.success) setTechnicians(res.data.employees);
+      }).catch(console.error);
+    }
+  }, []);
+
+  const fetchRequests = async () => {
+    setLoading(true);
+    try {
+      const res = await maintenanceService.getAll();
+      if (res.success) {
+        setRequests(res.data);
+      }
+    } catch (error) {
+      console.error("Error fetching requests:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const pending = requests.filter(r => r.status === 'PENDING' && (r.issueDescription.toLowerCase().includes(searchTerm.toLowerCase()) || r.asset?.name.toLowerCase().includes(searchTerm.toLowerCase())));
+  const approved = requests.filter(r => r.status === 'APPROVED' && (r.issueDescription.toLowerCase().includes(searchTerm.toLowerCase()) || r.asset?.name.toLowerCase().includes(searchTerm.toLowerCase())));
+  const inProgress = requests.filter(r => r.status === 'IN_PROGRESS' && (r.issueDescription.toLowerCase().includes(searchTerm.toLowerCase()) || r.asset?.name.toLowerCase().includes(searchTerm.toLowerCase())));
+  const resolved = requests.filter(r => r.status === 'RESOLVED' && (r.issueDescription.toLowerCase().includes(searchTerm.toLowerCase()) || r.asset?.name.toLowerCase().includes(searchTerm.toLowerCase())));
+
+  const openCreateModal = () => {
+    setModalMode('create');
+    setFormData({ assetId: '', issueDescription: '', priority: 'LOW', expectedCost: '', technicianId: '', actualCost: '', notes: '' });
+    setFormError('');
+    setIsModalOpen(true);
+  };
+
+  const handleActionClick = (req) => {
+    setSelectedRequest(req);
+    setFormData({ ...formData, notes: '' });
+    setFormError('');
+    if (req.status === 'PENDING') setModalMode(isAdmin ? 'approve' : 'view');
+    else if (req.status === 'APPROVED') setModalMode(isAdmin ? 'assign' : 'view');
+    else if (req.status === 'IN_PROGRESS') setModalMode(isAdmin ? 'resolve' : 'view');
+    else setModalMode('view');
+    
+    setIsModalOpen(true);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormLoading(true);
+    setFormError('');
+    
+    try {
+      let res;
+      if (modalMode === 'create') {
+        res = await maintenanceService.create({
+          assetId: formData.assetId,
+          issueDescription: formData.issueDescription,
+          priority: formData.priority
+        });
+      } else if (modalMode === 'approve') {
+        res = await maintenanceService.approve(selectedRequest.id, {
+          expectedCost: parseFloat(formData.expectedCost) || undefined,
+          notes: formData.notes
+        });
+      } else if (modalMode === 'assign') {
+        res = await maintenanceService.assign(selectedRequest.id, {
+          technicianId: formData.technicianId,
+          notes: formData.notes
+        });
+        // We'll also call start since in Kanban it moves straight to In Progress? Wait, assign moves it to assigned, then it can be started. Actually API has /start.
+        // Let's just do assign here. If they want to start, they do it next.
+      } else if (modalMode === 'start') {
+        res = await maintenanceService.start(selectedRequest.id, { notes: formData.notes });
+      } else if (modalMode === 'resolve') {
+        res = await maintenanceService.resolve(selectedRequest.id, {
+          actualCost: parseFloat(formData.actualCost) || undefined,
+          resolutionNotes: formData.notes
+        });
+      }
+
+      if (res && res.success) {
+        setIsModalOpen(false);
+        fetchRequests();
+      } else {
+        setFormError(res?.message || 'Operation failed');
+      }
+    } catch (err) {
+      setFormError(err.response?.data?.message || 'Server error occurred');
+    } finally {
+      setFormLoading(false);
+    }
+  };
 
   return (
     <div className="page-container">
@@ -182,90 +191,168 @@ const Maintenance = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               width="250px"
             />
-            
-            {/* Simple dropdown mock for status filter */}
-            <div className="select-wrapper" style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              border: '1px solid var(--border-color)', 
-              borderRadius: 'var(--radius-md)',
-              padding: '8px 12px',
-              fontSize: '0.875rem',
-              backgroundColor: 'white',
-              cursor: 'pointer',
-              color: 'var(--text-main)',
-              gap: '8px'
-            }}>
-              <span>All Status</span>
-              <ChevronDown size={16} color="var(--text-secondary)" />
-            </div>
           </div>
 
           <div className="controls-right">
-            <Button variant="primary">
+            <Button variant="primary" onClick={openCreateModal}>
               + New Request
             </Button>
           </div>
         </div>
 
-        <div className="kanban-board">
-          {/* Pending Column */}
-          <div className="kanban-column">
-            <div className="column-header">
-              <span className="status-dot pending"></span>
-              Pending (8)
+        {loading ? (
+          <div className="p-8 text-center">Loading maintenance board...</div>
+        ) : (
+          <div className="kanban-board">
+            <div className="kanban-column">
+              <div className="column-header"><span className="status-dot pending"></span> Pending ({pending.length})</div>
+              <div className="kanban-cards">
+                {pending.map(item => <MaintenanceCard key={item.id} data={item} onClickAction={handleActionClick} />)}
+              </div>
             </div>
-            <div className="kanban-cards">
-              {MOCK_DATA.pending.map(item => (
-                <MaintenanceCard key={item.id} data={item} />
-              ))}
-              <div className="load-more">+ 5 more requests</div>
-            </div>
-          </div>
 
-          {/* Approved Column */}
-          <div className="kanban-column">
-            <div className="column-header">
-              <span className="status-dot approved"></span>
-              Approved (5)
+            <div className="kanban-column">
+              <div className="column-header"><span className="status-dot approved"></span> Approved ({approved.length})</div>
+              <div className="kanban-cards">
+                {approved.map(item => <MaintenanceCard key={item.id} data={item} onClickAction={handleActionClick} />)}
+              </div>
             </div>
-            <div className="kanban-cards">
-              {MOCK_DATA.approved.map(item => (
-                <MaintenanceCard key={item.id} data={item} />
-              ))}
-              <div className="load-more">+ 2 more requests</div>
-            </div>
-          </div>
 
-          {/* In Progress Column */}
-          <div className="kanban-column">
-            <div className="column-header">
-              <span className="status-dot in-progress"></span>
-              In Progress (6)
+            <div className="kanban-column">
+              <div className="column-header"><span className="status-dot in-progress"></span> In Progress ({inProgress.length})</div>
+              <div className="kanban-cards">
+                {inProgress.map(item => <MaintenanceCard key={item.id} data={item} onClickAction={handleActionClick} />)}
+              </div>
             </div>
-            <div className="kanban-cards">
-              {MOCK_DATA.inProgress.map(item => (
-                <MaintenanceCard key={item.id} data={item} />
-              ))}
-              <div className="load-more">+ 3 more requests</div>
-            </div>
-          </div>
 
-          {/* Resolved Column */}
-          <div className="kanban-column">
-            <div className="column-header">
-              <span className="status-dot resolved"></span>
-              Resolved (3)
-            </div>
-            <div className="kanban-cards">
-              {MOCK_DATA.resolved.map(item => (
-                <MaintenanceCard key={item.id} data={item} />
-              ))}
-              <div className="load-more">+ 0 more requests</div>
+            <div className="kanban-column">
+              <div className="column-header"><span className="status-dot resolved"></span> Resolved ({resolved.length})</div>
+              <div className="kanban-cards">
+                {resolved.map(item => <MaintenanceCard key={item.id} data={item} onClickAction={handleActionClick} />)}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
+
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={() => !formLoading && setIsModalOpen(false)}
+        title={
+          modalMode === 'create' ? 'New Maintenance Request' : 
+          modalMode === 'approve' ? 'Approve Request' :
+          modalMode === 'assign' ? 'Assign Technician' :
+          modalMode === 'resolve' ? 'Resolve Maintenance' : 'View Request'
+        }
+      >
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {formError && (
+            <div style={{ color: '#f43f5e', fontSize: '0.875rem', marginBottom: '0.5rem' }}>
+              {formError}
+            </div>
+          )}
+
+          {modalMode === 'create' && (
+            <>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Asset</label>
+                <select className="form-select" value={formData.assetId} onChange={e => setFormData({...formData, assetId: e.target.value})} required>
+                  <option value="">Select Asset...</option>
+                  {assets.map(a => <option key={a.id} value={a.id}>{a.assetTag} - {a.name}</option>)}
+                </select>
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Issue Description</label>
+                <textarea className="form-textarea" required value={formData.issueDescription} onChange={e => setFormData({...formData, issueDescription: e.target.value})}></textarea>
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Priority</label>
+                <select className="form-select" value={formData.priority} onChange={e => setFormData({...formData, priority: e.target.value})}>
+                  <option value="LOW">Low</option>
+                  <option value="MEDIUM">Medium</option>
+                  <option value="HIGH">High</option>
+                  <option value="CRITICAL">Critical</option>
+                </select>
+              </div>
+            </>
+          )}
+
+          {modalMode === 'approve' && (
+            <>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Expected Cost ($)</label>
+                <input type="number" step="0.01" className="form-input" value={formData.expectedCost} onChange={e => setFormData({...formData, expectedCost: e.target.value})} />
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Notes</label>
+                <textarea className="form-textarea" value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})}></textarea>
+              </div>
+            </>
+          )}
+
+          {modalMode === 'assign' && (
+            <>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Technician</label>
+                <select className="form-select" value={formData.technicianId} onChange={e => setFormData({...formData, technicianId: e.target.value})} required>
+                  <option value="">Select Technician...</option>
+                  {technicians.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
+                </select>
+              </div>
+              <div className="form-group" style={{ marginBottom: 0 }}>
+                <label className="form-label">Notes</label>
+                <textarea className="form-textarea" value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})}></textarea>
+              </div>
+            </>
+          )}
+
+          {modalMode === 'resolve' && (
+             <>
+             <div className="form-group" style={{ marginBottom: 0 }}>
+               <label className="form-label">Actual Cost ($)</label>
+               <input type="number" step="0.01" className="form-input" value={formData.actualCost} onChange={e => setFormData({...formData, actualCost: e.target.value})} />
+             </div>
+             <div className="form-group" style={{ marginBottom: 0 }}>
+               <label className="form-label">Resolution Notes</label>
+               <textarea className="form-textarea" value={formData.notes} onChange={e => setFormData({...formData, notes: e.target.value})} required></textarea>
+             </div>
+           </>
+          )}
+
+          {modalMode === 'view' && selectedRequest && (
+            <div className="p-4 bg-gray-50 rounded text-sm">
+              <p><strong>Description:</strong> {selectedRequest.issueDescription}</p>
+              <p><strong>Asset:</strong> {selectedRequest.asset?.name}</p>
+              <p><strong>Status:</strong> {selectedRequest.status}</p>
+              <p><strong>Priority:</strong> {selectedRequest.priority}</p>
+              <p>Only Admins/Managers can progress this request.</p>
+            </div>
+          )}
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '1rem' }}>
+            <Button variant="outline" type="button" onClick={() => setIsModalOpen(false)} disabled={formLoading}>
+              {modalMode === 'view' ? 'Close' : 'Cancel'}
+            </Button>
+            {modalMode !== 'view' && (
+              <Button variant="primary" type="submit" disabled={formLoading}>
+                {formLoading ? 'Processing...' : 'Submit'}
+              </Button>
+            )}
+            
+            {modalMode === 'assign' && (
+              <Button variant="secondary" type="button" onClick={async () => {
+                setFormLoading(true);
+                try {
+                  const res = await maintenanceService.start(selectedRequest.id, { notes: formData.notes });
+                  if (res.success) { setIsModalOpen(false); fetchRequests(); }
+                } catch(e){} finally { setFormLoading(false); }
+              }}>
+                Start Work Directly
+              </Button>
+            )}
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };

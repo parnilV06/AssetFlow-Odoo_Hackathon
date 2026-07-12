@@ -2,20 +2,24 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Bell, Settings } from 'lucide-react';
 import SearchInput from '../Input/SearchInput';
+import { useAuth } from '../../context/AuthContext';
 import './Header.css';
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const pathSegments = location.pathname.split('/').filter(Boolean);
   const isDashboard = pathSegments.length === 0 || pathSegments[0] === 'dashboard';
+
+  const firstName = user?.name ? user.name.split(' ')[0] : 'User';
 
   return (
     <header className="header">
       <div className="breadcrumb">
         {isDashboard ? (
           <div className="welcome-section">
-            <h1 className="welcome-title">Welcome back, Rahul 👋</h1>
+            <h1 className="welcome-title">Welcome back, {firstName} 👋</h1>
             <p className="welcome-subtitle">Here's what's happening with your assets today.</p>
           </div>
         ) : pathSegments.length > 0 ? (

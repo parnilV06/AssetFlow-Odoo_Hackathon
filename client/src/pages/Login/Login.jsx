@@ -1,16 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import Logo from '../../components/Common/Logo';
 import './Login.css';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login, signup, user } = useAuth();
+  
+  const [isLogin, setIsLogin] = useState(true);
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (user) {
+      const from = location.state?.from?.pathname || '/dashboard';
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate, location]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login submitted:', { email, password, rememberMe });
+    setErrorMsg('');
+    setIsLoading(true);
+
+    let res;
+    if (isLogin) {
+      res = await login(email, password);
+    } else {
+      res = await signup(name, email, password);
+      if (res.success) {
+        setIsLogin(true); // Switch to login after successful signup
+        setErrorMsg('Account created successfully. Please login.');
+        setPassword('');
+      }
+    }
+
+    if (!res.success) {
+      setErrorMsg(res.message);
+    }
+    
+    setIsLoading(false);
   };
 
   return (
@@ -183,11 +219,42 @@ const Login = () => {
 
         <div className="login-auth-card">
           <div className="auth-header">
-            <h2 className="auth-title">Welcome Back</h2>
-            <p className="auth-subtitle">Sign in to continue to AssetFlow</p>
+            <h2 className="auth-title">{isLogin ? 'Welcome Back' : 'Create Account'}</h2>
+            <p className="auth-subtitle">
+              {isLogin ? 'Sign in to continue to AssetFlow' : 'Register as a new employee'}
+            </p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>
+            {errorMsg && (
+              <div className={`auth-error ${errorMsg.includes('successfully') ? 'auth-success' : ''}`} style={{ color: errorMsg.includes('successfully') ? '#10b981' : '#f43f5e', marginBottom: '1rem', fontSize: '0.875rem' }}>
+                {errorMsg}
+              </div>
+            )}
+            
+            {!isLogin && (
+              <div className="form-group">
+                <label className="form-label" htmlFor="name">Full Name</label>
+                <div className="input-wrapper">
+                  <span className="input-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </span>
+                  <input
+                    id="name"
+                    type="text"
+                    className="input-field"
+                    placeholder="Rahul Sharma"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="form-group">
               <label className="form-label" htmlFor="email">Email</label>
               <div className="input-wrapper">
@@ -249,33 +316,48 @@ const Login = () => {
               </div>
             </div>
 
-            <div className="form-actions">
-              <label className="remember-me">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                />
-                <div className="custom-checkbox">
-                  <svg className="check-icon" viewBox="0 0 24 24">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                </div>
-                Remember me
-              </label>
-              <a href="#forgot" className="forgot-password">Forgot password?</a>
-            </div>
+            {isLogin && (
+              <div className="form-actions">
+                <label className="remember-me">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                  />
+                  <div className="custom-checkbox">
+                    <svg className="check-icon" viewBox="0 0 24 24">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </div>
+                  Remember me
+                </label>
+                <a href="#forgot" className="forgot-password">Forgot password?</a>
+              </div>
+            )}
 
-            <button type="submit" className="btn-primary">
-              Sign In
+            <button type="submit" className="btn-primary" disabled={isLoading}>
+              {isLoading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
             </button>
 
 
           </form>
 
           <div className="auth-footer">
-            New employee?
-            <a href="#register" className="auth-link">Create Employee Account</a>
+            {isLogin ? (
+              <>
+                New employee?
+                <button type="button" onClick={() => { setIsLogin(false); setErrorMsg(''); }} className="auth-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                  Create Employee Account
+                </button>
+              </>
+            ) : (
+              <>
+                Already have an account?
+                <button type="button" onClick={() => { setIsLogin(true); setErrorMsg(''); }} className="auth-link" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}>
+                  Sign In instead
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>
