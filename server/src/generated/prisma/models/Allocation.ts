@@ -29,6 +29,7 @@ export type AllocationMinAggregateOutputType = {
   assetId: string | null
   userId: string | null
   allocatedAt: Date | null
+  expectedReturn: Date | null
   returnedAt: Date | null
   notes: string | null
   allocatedBy: string | null
@@ -41,6 +42,7 @@ export type AllocationMaxAggregateOutputType = {
   assetId: string | null
   userId: string | null
   allocatedAt: Date | null
+  expectedReturn: Date | null
   returnedAt: Date | null
   notes: string | null
   allocatedBy: string | null
@@ -53,6 +55,7 @@ export type AllocationCountAggregateOutputType = {
   assetId: number
   userId: number
   allocatedAt: number
+  expectedReturn: number
   returnedAt: number
   notes: number
   allocatedBy: number
@@ -67,6 +70,7 @@ export type AllocationMinAggregateInputType = {
   assetId?: true
   userId?: true
   allocatedAt?: true
+  expectedReturn?: true
   returnedAt?: true
   notes?: true
   allocatedBy?: true
@@ -79,6 +83,7 @@ export type AllocationMaxAggregateInputType = {
   assetId?: true
   userId?: true
   allocatedAt?: true
+  expectedReturn?: true
   returnedAt?: true
   notes?: true
   allocatedBy?: true
@@ -91,6 +96,7 @@ export type AllocationCountAggregateInputType = {
   assetId?: true
   userId?: true
   allocatedAt?: true
+  expectedReturn?: true
   returnedAt?: true
   notes?: true
   allocatedBy?: true
@@ -176,6 +182,7 @@ export type AllocationGroupByOutputType = {
   assetId: string
   userId: string
   allocatedAt: Date
+  expectedReturn: Date | null
   returnedAt: Date | null
   notes: string | null
   allocatedBy: string | null
@@ -209,6 +216,7 @@ export type AllocationWhereInput = {
   assetId?: Prisma.UuidFilter<"Allocation"> | string
   userId?: Prisma.UuidFilter<"Allocation"> | string
   allocatedAt?: Prisma.DateTimeFilter<"Allocation"> | Date | string
+  expectedReturn?: Prisma.DateTimeNullableFilter<"Allocation"> | Date | string | null
   returnedAt?: Prisma.DateTimeNullableFilter<"Allocation"> | Date | string | null
   notes?: Prisma.StringNullableFilter<"Allocation"> | string | null
   allocatedBy?: Prisma.UuidNullableFilter<"Allocation"> | string | null
@@ -223,6 +231,7 @@ export type AllocationOrderByWithRelationInput = {
   assetId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   allocatedAt?: Prisma.SortOrder
+  expectedReturn?: Prisma.SortOrderInput | Prisma.SortOrder
   returnedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   allocatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -240,6 +249,7 @@ export type AllocationWhereUniqueInput = Prisma.AtLeast<{
   assetId?: Prisma.UuidFilter<"Allocation"> | string
   userId?: Prisma.UuidFilter<"Allocation"> | string
   allocatedAt?: Prisma.DateTimeFilter<"Allocation"> | Date | string
+  expectedReturn?: Prisma.DateTimeNullableFilter<"Allocation"> | Date | string | null
   returnedAt?: Prisma.DateTimeNullableFilter<"Allocation"> | Date | string | null
   notes?: Prisma.StringNullableFilter<"Allocation"> | string | null
   allocatedBy?: Prisma.UuidNullableFilter<"Allocation"> | string | null
@@ -254,6 +264,7 @@ export type AllocationOrderByWithAggregationInput = {
   assetId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   allocatedAt?: Prisma.SortOrder
+  expectedReturn?: Prisma.SortOrderInput | Prisma.SortOrder
   returnedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   allocatedBy?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -272,6 +283,7 @@ export type AllocationScalarWhereWithAggregatesInput = {
   assetId?: Prisma.UuidWithAggregatesFilter<"Allocation"> | string
   userId?: Prisma.UuidWithAggregatesFilter<"Allocation"> | string
   allocatedAt?: Prisma.DateTimeWithAggregatesFilter<"Allocation"> | Date | string
+  expectedReturn?: Prisma.DateTimeNullableWithAggregatesFilter<"Allocation"> | Date | string | null
   returnedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Allocation"> | Date | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"Allocation"> | string | null
   allocatedBy?: Prisma.UuidNullableWithAggregatesFilter<"Allocation"> | string | null
@@ -282,6 +294,7 @@ export type AllocationScalarWhereWithAggregatesInput = {
 export type AllocationCreateInput = {
   id?: string
   allocatedAt?: Date | string
+  expectedReturn?: Date | string | null
   returnedAt?: Date | string | null
   notes?: string | null
   allocatedBy?: string | null
@@ -296,6 +309,7 @@ export type AllocationUncheckedCreateInput = {
   assetId: string
   userId: string
   allocatedAt?: Date | string
+  expectedReturn?: Date | string | null
   returnedAt?: Date | string | null
   notes?: string | null
   allocatedBy?: string | null
@@ -306,6 +320,7 @@ export type AllocationUncheckedCreateInput = {
 export type AllocationUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   allocatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expectedReturn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allocatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -320,6 +335,7 @@ export type AllocationUncheckedUpdateInput = {
   assetId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   allocatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expectedReturn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allocatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -332,6 +348,7 @@ export type AllocationCreateManyInput = {
   assetId: string
   userId: string
   allocatedAt?: Date | string
+  expectedReturn?: Date | string | null
   returnedAt?: Date | string | null
   notes?: string | null
   allocatedBy?: string | null
@@ -342,6 +359,7 @@ export type AllocationCreateManyInput = {
 export type AllocationUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   allocatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expectedReturn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allocatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -354,6 +372,7 @@ export type AllocationUncheckedUpdateManyInput = {
   assetId?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   allocatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expectedReturn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allocatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -376,6 +395,7 @@ export type AllocationCountOrderByAggregateInput = {
   assetId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   allocatedAt?: Prisma.SortOrder
+  expectedReturn?: Prisma.SortOrder
   returnedAt?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   allocatedBy?: Prisma.SortOrder
@@ -388,6 +408,7 @@ export type AllocationMaxOrderByAggregateInput = {
   assetId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   allocatedAt?: Prisma.SortOrder
+  expectedReturn?: Prisma.SortOrder
   returnedAt?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   allocatedBy?: Prisma.SortOrder
@@ -400,6 +421,7 @@ export type AllocationMinOrderByAggregateInput = {
   assetId?: Prisma.SortOrder
   userId?: Prisma.SortOrder
   allocatedAt?: Prisma.SortOrder
+  expectedReturn?: Prisma.SortOrder
   returnedAt?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   allocatedBy?: Prisma.SortOrder
@@ -494,6 +516,7 @@ export type AllocationUncheckedUpdateManyWithoutAssetNestedInput = {
 export type AllocationCreateWithoutUserInput = {
   id?: string
   allocatedAt?: Date | string
+  expectedReturn?: Date | string | null
   returnedAt?: Date | string | null
   notes?: string | null
   allocatedBy?: string | null
@@ -506,6 +529,7 @@ export type AllocationUncheckedCreateWithoutUserInput = {
   id?: string
   assetId: string
   allocatedAt?: Date | string
+  expectedReturn?: Date | string | null
   returnedAt?: Date | string | null
   notes?: string | null
   allocatedBy?: string | null
@@ -547,6 +571,7 @@ export type AllocationScalarWhereInput = {
   assetId?: Prisma.UuidFilter<"Allocation"> | string
   userId?: Prisma.UuidFilter<"Allocation"> | string
   allocatedAt?: Prisma.DateTimeFilter<"Allocation"> | Date | string
+  expectedReturn?: Prisma.DateTimeNullableFilter<"Allocation"> | Date | string | null
   returnedAt?: Prisma.DateTimeNullableFilter<"Allocation"> | Date | string | null
   notes?: Prisma.StringNullableFilter<"Allocation"> | string | null
   allocatedBy?: Prisma.UuidNullableFilter<"Allocation"> | string | null
@@ -557,6 +582,7 @@ export type AllocationScalarWhereInput = {
 export type AllocationCreateWithoutAssetInput = {
   id?: string
   allocatedAt?: Date | string
+  expectedReturn?: Date | string | null
   returnedAt?: Date | string | null
   notes?: string | null
   allocatedBy?: string | null
@@ -569,6 +595,7 @@ export type AllocationUncheckedCreateWithoutAssetInput = {
   id?: string
   userId: string
   allocatedAt?: Date | string
+  expectedReturn?: Date | string | null
   returnedAt?: Date | string | null
   notes?: string | null
   allocatedBy?: string | null
@@ -606,6 +633,7 @@ export type AllocationCreateManyUserInput = {
   id?: string
   assetId: string
   allocatedAt?: Date | string
+  expectedReturn?: Date | string | null
   returnedAt?: Date | string | null
   notes?: string | null
   allocatedBy?: string | null
@@ -616,6 +644,7 @@ export type AllocationCreateManyUserInput = {
 export type AllocationUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   allocatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expectedReturn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allocatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -628,6 +657,7 @@ export type AllocationUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   assetId?: Prisma.StringFieldUpdateOperationsInput | string
   allocatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expectedReturn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allocatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -639,6 +669,7 @@ export type AllocationUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   assetId?: Prisma.StringFieldUpdateOperationsInput | string
   allocatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expectedReturn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allocatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -650,6 +681,7 @@ export type AllocationCreateManyAssetInput = {
   id?: string
   userId: string
   allocatedAt?: Date | string
+  expectedReturn?: Date | string | null
   returnedAt?: Date | string | null
   notes?: string | null
   allocatedBy?: string | null
@@ -660,6 +692,7 @@ export type AllocationCreateManyAssetInput = {
 export type AllocationUpdateWithoutAssetInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   allocatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expectedReturn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allocatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -672,6 +705,7 @@ export type AllocationUncheckedUpdateWithoutAssetInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   allocatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expectedReturn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allocatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -683,6 +717,7 @@ export type AllocationUncheckedUpdateManyWithoutAssetInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   allocatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  expectedReturn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   returnedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   allocatedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -697,6 +732,7 @@ export type AllocationSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   assetId?: boolean
   userId?: boolean
   allocatedAt?: boolean
+  expectedReturn?: boolean
   returnedAt?: boolean
   notes?: boolean
   allocatedBy?: boolean
@@ -711,6 +747,7 @@ export type AllocationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ex
   assetId?: boolean
   userId?: boolean
   allocatedAt?: boolean
+  expectedReturn?: boolean
   returnedAt?: boolean
   notes?: boolean
   allocatedBy?: boolean
@@ -725,6 +762,7 @@ export type AllocationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ex
   assetId?: boolean
   userId?: boolean
   allocatedAt?: boolean
+  expectedReturn?: boolean
   returnedAt?: boolean
   notes?: boolean
   allocatedBy?: boolean
@@ -739,6 +777,7 @@ export type AllocationSelectScalar = {
   assetId?: boolean
   userId?: boolean
   allocatedAt?: boolean
+  expectedReturn?: boolean
   returnedAt?: boolean
   notes?: boolean
   allocatedBy?: boolean
@@ -746,7 +785,7 @@ export type AllocationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AllocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assetId" | "userId" | "allocatedAt" | "returnedAt" | "notes" | "allocatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["allocation"]>
+export type AllocationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assetId" | "userId" | "allocatedAt" | "expectedReturn" | "returnedAt" | "notes" | "allocatedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["allocation"]>
 export type AllocationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -771,6 +810,7 @@ export type $AllocationPayload<ExtArgs extends runtime.Types.Extensions.Internal
     assetId: string
     userId: string
     allocatedAt: Date
+    expectedReturn: Date | null
     returnedAt: Date | null
     notes: string | null
     allocatedBy: string | null
@@ -1205,6 +1245,7 @@ export interface AllocationFieldRefs {
   readonly assetId: Prisma.FieldRef<"Allocation", 'String'>
   readonly userId: Prisma.FieldRef<"Allocation", 'String'>
   readonly allocatedAt: Prisma.FieldRef<"Allocation", 'DateTime'>
+  readonly expectedReturn: Prisma.FieldRef<"Allocation", 'DateTime'>
   readonly returnedAt: Prisma.FieldRef<"Allocation", 'DateTime'>
   readonly notes: Prisma.FieldRef<"Allocation", 'String'>
   readonly allocatedBy: Prisma.FieldRef<"Allocation", 'String'>

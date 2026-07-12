@@ -187,9 +187,10 @@ model Allocation {
   id           String    @id @default(uuid()) @db.Uuid
   assetId      String    @db.Uuid
   userId       String    @db.Uuid
-  allocatedAt  DateTime  @default(now())
-  returnedAt   DateTime?                    // null = currently allocated
-  notes        String?
+  allocatedAt    DateTime  @default(now())
+  expectedReturn DateTime?
+  returnedAt     DateTime?                    // null = currently allocated
+  notes          String?
   allocatedBy  String?   @db.Uuid          // who performed the allocation (admin/manager UUID)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt

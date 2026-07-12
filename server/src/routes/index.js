@@ -21,7 +21,7 @@ router.use('/departments', departmentRoutes);
 router.use('/employees', employeeRoutes);
 router.use('/categories', categoryRoutes);
 router.use('/assets', assetRoutes);
-router.use('/allocation', allocationRoutes);
+router.use('/allocations', allocationRoutes);
 router.use('/bookings', bookingRoutes);
 router.use('/maintenance', maintenanceRoutes);
 router.use('/audit', auditRoutes);
