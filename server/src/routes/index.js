@@ -10,10 +10,6 @@ const assetRoutes = require('./asset.routes');
 const allocationRoutes = require('./allocation.routes');
 const bookingRoutes = require('./booking.routes');
 const maintenanceRoutes = require('./maintenance.routes');
-const auditRoutes = require('./audit.routes');
-const reportRoutes = require('./report.routes');
-const notificationRoutes = require('./notification.routes');
-const activityRoutes = require('./activity.routes');
 
 router.use('/auth', authRoutes);
 router.use('/dashboard', dashboardRoutes);
@@ -24,9 +20,5 @@ router.use('/assets', assetRoutes);
 router.use('/allocations', allocationRoutes);
 router.use('/bookings', bookingRoutes);
 router.use('/maintenance', maintenanceRoutes);
-router.use('/audit', auditRoutes);
-router.use('/reports', reportRoutes);
-router.use('/notifications', notificationRoutes);
-router.use('/activity', activityRoutes);
 
 module.exports = router;
