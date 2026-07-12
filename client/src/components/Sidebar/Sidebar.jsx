@@ -5,6 +5,7 @@ import {
   Wrench, ClipboardCheck, BarChart2, Bell, Settings,
   ChevronDown, ChevronRight
 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 import './Sidebar.css';
 
 const navItems = [
@@ -17,6 +18,7 @@ const navItems = [
     submenu: [
       { name: 'Departments', path: '/organization/departments' },
       { name: 'Employees', path: '/organization/employees' },
+      { name: 'Categories', path: '/organization/categories' },
     ]
   },
   { name: 'Assets', icon: HardDrive, path: '/assets' },
@@ -32,11 +34,15 @@ const navItems = [
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  
   // By default, expand Organization if we are on an organization route
   const isOrgActive = location.pathname.startsWith('/organization');
   const [expanded, setExpanded] = React.useState({
     'Organization': isOrgActive
   });
+  
+  const [showDropdown, setShowDropdown] = React.useState(false);
 
   const toggleSubmenu = (e, name) => {
     e.preventDefault();
@@ -51,6 +57,11 @@ const Sidebar = () => {
         navigate(item.submenu[0].path);
       }
     }
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/login');
   };
 
   return (
@@ -106,17 +117,30 @@ const Sidebar = () => {
       </nav>
 
       <div className="sidebar-footer">
-        <div className="user-profile">
-          <img 
-            src="https://i.pravatar.cc/150?img=11" 
-            alt="User Avatar" 
-            className="user-avatar" 
-          />
-          <div className="user-info">
-            <div className="user-name">Rahul Sharma</div>
-            <div className="user-role">Asset Manager</div>
+        <div className="user-profile-container" style={{ position: 'relative' }}>
+          <div className="user-profile" onClick={() => setShowDropdown(!showDropdown)} style={{ cursor: 'pointer' }}>
+            <img 
+              src={`https://ui-avatars.com/api/?name=${encodeURIComponent(user?.name || 'User')}&background=0052cc&color=fff`} 
+              alt="User Avatar" 
+              className="user-avatar" 
+            />
+            <div className="user-info">
+              <div className="user-name">{user?.name || 'User'}</div>
+              <div className="user-role" style={{textTransform: 'capitalize'}}>{user?.role?.toLowerCase().replace('_', ' ') || 'Employee'}</div>
+            </div>
+            <ChevronDown size={16} className="text-tertiary" style={{ color: 'var(--text-tertiary)' }} />
           </div>
-          <ChevronDown size={16} className="text-tertiary" style={{ color: 'var(--text-tertiary)' }} />
+          
+          {showDropdown && (
+            <div className="user-dropdown-menu" style={{ position: 'absolute', bottom: '100%', left: 0, right: 0, background: 'var(--bg-surface)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '0.5rem', marginBottom: '0.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+              <button 
+                onClick={handleLogout}
+                style={{ width: '100%', padding: '0.5rem', background: 'none', border: 'none', textAlign: 'left', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#f43f5e', fontSize: '0.875rem', fontWeight: 500 }}
+              >
+                Log Out
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </aside>

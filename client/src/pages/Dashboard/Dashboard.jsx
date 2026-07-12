@@ -1,32 +1,14 @@
-import React from 'react';
-import { ArrowUpRight, ArrowDownRight, Laptop, Printer, Wrench, Calendar, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Laptop, Printer, Wrench, Calendar, ChevronDown, CheckCircle, AlertCircle, Clock } from 'lucide-react';
 import { 
   PieChart, Pie, Cell, ResponsiveContainer, 
   LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid 
 } from 'recharts';
+import { dashboardService } from '../../services/dashboard';
+import { useAuth } from '../../context/AuthContext';
 import './Dashboard.css';
 
-// Data for charts
-const utilizationData = [
-  { name: 'Utilized', value: 65, color: '#3b82f6' },
-  { name: 'Available', value: 35, color: '#06b6d4' }
-];
-
-const categoryData = [
-  { name: 'Electronics', value: 412, percent: '38%', color: '#3b82f6' },
-  { name: 'Furniture', value: 256, percent: '24%', color: '#a855f7' },
-  { name: 'Vehicles', value: 152, percent: '14%', color: '#eab308' },
-  { name: 'Equipment', value: 168, percent: '16%', color: '#ec4899' },
-  { name: 'Others', value: 100, percent: '9%', color: '#8b5cf6' }
-];
-
-const trendData = [
-  { date: 'Apr 29', requests: 5 },
-  { date: 'May 6', requests: 10 },
-  { date: 'May 13', requests: 7 },
-  { date: 'May 20', requests: 11 },
-  { date: 'May 27', requests: 16 }
-];
+const COLORS = ['#3b82f6', '#06b6d4', '#a855f7', '#eab308', '#ec4899', '#8b5cf6'];
 
 const KPICard = ({ title, value, trend, trendIcon: TrendIcon, trendColor, trendText }) => (
   <div className="dashboard-card kpi-card">
@@ -40,50 +22,148 @@ const KPICard = ({ title, value, trend, trendIcon: TrendIcon, trendColor, trendT
 );
 
 const Dashboard = () => {
+  const { user } = useAuth();
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        const res = await dashboardService.getDashboard();
+        if (res.success) {
+          setData(res.data);
+        } else {
+          setError('Failed to load dashboard data');
+        }
+      } catch (err) {
+        setError(err.message || 'Error fetching dashboard');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchDashboard();
+  }, []);
+
+  if (loading) return <div className="p-8">Loading dashboard...</div>;
+  if (error) return <div className="p-8 text-red-500">{error}</div>;
+  if (!data) return null;
+
+  const isEmployee = user?.role === 'EMPLOYEE';
+
+  if (isEmployee) {
+    const { summary, myAllocations, myBookings, myMaintenance } = data;
+    return (
+      <div className="dashboard-page">
+        <div className="kpi-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+          <KPICard title="My Active Allocations" value={summary.activeAllocations} trendColor="trend-neutral" />
+          <KPICard title="My Active Bookings" value={summary.activeBookings} trendColor="trend-neutral" />
+          <KPICard title="My Pending Maintenance" value={summary.pendingMaintenance} trendColor="trend-neutral" />
+        </div>
+        
+        <div className="dashboard-row bottom" style={{ marginTop: '2rem' }}>
+          <div className="dashboard-card">
+            <div className="card-header"><h3 className="card-title">My Allocations</h3></div>
+            <div className="activity-list">
+              {myAllocations?.length > 0 ? myAllocations.map(a => (
+                <div key={a.id} className="activity-item">
+                  <Laptop size={16} className="activity-icon" />
+                  <div className="activity-content">{a.asset.name} (Tag: {a.asset.assetTag})</div>
+                </div>
+              )) : <div className="text-secondary text-sm">No active allocations.</div>}
+            </div>
+          </div>
+          
+          <div className="dashboard-card">
+            <div className="card-header"><h3 className="card-title">My Bookings</h3></div>
+            <div className="activity-list">
+              {myBookings?.length > 0 ? myBookings.map(b => (
+                <div key={b.id} className="activity-item">
+                  <Calendar size={16} className="activity-icon" />
+                  <div className="activity-content">{b.asset.name} (Tag: {b.asset.assetTag})</div>
+                </div>
+              )) : <div className="text-secondary text-sm">No active bookings.</div>}
+            </div>
+          </div>
+          
+          <div className="dashboard-card">
+            <div className="card-header"><h3 className="card-title">My Maintenance Requests</h3></div>
+            <div className="activity-list">
+              {myMaintenance?.length > 0 ? myMaintenance.map(m => (
+                <div key={m.id} className="activity-item">
+                  <Wrench size={16} className="activity-icon" />
+                  <div className="activity-content">{m.asset.name} (Tag: {m.asset.assetTag})</div>
+                </div>
+              )) : <div className="text-secondary text-sm">No pending maintenance.</div>}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // MANAGER/ADMIN VIEW
+  const { summary, assetAnalytics, bookingAnalytics, maintenance, recentData } = data;
+
+  // Process data for charts
+  const utilizedTotal = summary.allocatedAssets + summary.reservedAssets + summary.underMaintenance;
+  const utilizationData = [
+    { name: 'Utilized', value: utilizedTotal, color: '#3b82f6' },
+    { name: 'Available', value: summary.availableAssets, color: '#06b6d4' }
+  ];
+  const utilizedPercent = summary.totalAssets > 0 ? Math.round((utilizedTotal / summary.totalAssets) * 100) : 0;
+
+  const categoryData = assetAnalytics.categoryDistribution.map((cat, i) => ({
+    name: cat.name,
+    value: cat.count,
+    percent: Math.round((cat.count / summary.totalAssets) * 100) + '%',
+    color: COLORS[i % COLORS.length]
+  }));
+
+  const trendData = bookingAnalytics.monthlyTrend.map(m => {
+    const [year, month] = m.month.split('-');
+    const date = new Date(year, month - 1, 1).toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+    return { date, requests: m.count };
+  });
+
   return (
     <div className="dashboard-page">
       {/* Top KPI Row */}
       <div className="kpi-grid">
         <KPICard 
           title="Assets Available" 
-          value="425" 
-          trend="↑ 12" 
-          trendText="this week"
-          trendColor="trend-up"
+          value={summary.availableAssets} 
+          trend={`${summary.totalAssets} Total`}
+          trendColor="trend-neutral"
         />
         <KPICard 
           title="Assets Allocated" 
-          value="278" 
-          trend="↑ 8" 
-          trendText="this week"
+          value={summary.allocatedAssets} 
+          trend="" 
           trendColor="trend-up"
         />
         <KPICard 
-          title="Maintenance Today" 
-          value="7" 
-          trend="↓ 2" 
-          trendText="this week"
+          title="Under Maintenance" 
+          value={summary.underMaintenance} 
+          trend={`${maintenance.pending} pending`}
           trendColor="trend-down"
         />
         <KPICard 
           title="Active Bookings" 
-          value="13" 
-          trend="↑ 3" 
-          trendText="today"
+          value={summary.activeBookings} 
+          trend={`${bookingAnalytics.upcomingBookings} upcoming`}
           trendColor="trend-up"
         />
         <KPICard 
           title="Upcoming Returns" 
-          value="18" 
-          trend="Due in next 7 days" 
-          trendText=""
+          value={recentData.upcomingReturns?.length || 0} 
+          trend="In next 7 days" 
           trendColor="trend-neutral"
         />
         <KPICard 
-          title="Overdue Returns" 
-          value="5" 
-          trend="Overdue" 
-          trendText=""
+          title="Disposed Assets" 
+          value={summary.disposedAssets} 
+          trend="" 
           trendColor="trend-down"
         />
       </div>
@@ -116,7 +196,7 @@ const Dashboard = () => {
                 </PieChart>
               </ResponsiveContainer>
               <div className="doughnut-center">
-                <div className="doughnut-percent">65%</div>
+                <div className="doughnut-percent">{utilizedPercent}%</div>
                 <div className="doughnut-label">Utilized</div>
               </div>
             </div>
@@ -125,22 +205,19 @@ const Dashboard = () => {
                 <div className="legend-item" key={item.name}>
                   <span className="legend-dot" style={{ backgroundColor: item.color }}></span>
                   <span>{item.name}</span>
-                  <span className="legend-value">{item.value}%</span>
+                  <span className="legend-value">{item.value}</span>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* Maintenance Trend Line Chart */}
+        {/* Monthly Booking Trend Line Chart */}
         <div className="dashboard-card">
           <div className="card-header">
             <div>
-              <h3 className="card-title">Maintenance Trend</h3>
-              <span className="kpi-title" style={{fontSize: '0.75rem'}}>This Month</span>
-            </div>
-            <div style={{display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', color: 'var(--text-secondary)', cursor: 'pointer'}}>
-              This Month <ChevronDown size={14} />
+              <h3 className="card-title">Booking Trend</h3>
+              <span className="kpi-title" style={{fontSize: '0.75rem'}}>Last 6 Months</span>
             </div>
           </div>
           <div className="chart-container">
@@ -166,29 +243,30 @@ const Dashboard = () => {
         {/* Important Alerts */}
         <div className="dashboard-card">
           <div className="card-header">
-            <h3 className="card-title">Important Alerts</h3>
+            <h3 className="card-title">Action Items</h3>
           </div>
           <div className="alerts-list">
-            <div className="alert-item">
-              <div className="alert-icon red">O</div>
-              <div className="alert-content">5 Returns are overdue</div>
-              <a href="#" className="alert-action">View all</a>
-            </div>
-            <div className="alert-item">
-              <div className="alert-icon orange">A</div>
-              <div className="alert-content">2 Maintenance requests pending approval</div>
-              <a href="#" className="alert-action">View all</a>
-            </div>
-            <div className="alert-item">
-              <div className="alert-icon green">A</div>
-              <div className="alert-content">Audit cycle 'May 2025' starts tomorrow</div>
-              <a href="#" className="alert-action">View details</a>
-            </div>
-            <div className="alert-item">
-              <div className="alert-icon blue">R</div>
-              <div className="alert-content">Room B1 booking starts in 30 mins</div>
-              <a href="#" className="alert-action">View booking</a>
-            </div>
+            {maintenance.pending > 0 && (
+              <div className="alert-item">
+                <div className="alert-icon orange"><Clock size={14}/></div>
+                <div className="alert-content">{maintenance.pending} Maintenance requests pending approval</div>
+              </div>
+            )}
+            {bookingAnalytics.upcomingBookings > 0 && (
+              <div className="alert-item">
+                <div className="alert-icon blue"><Calendar size={14}/></div>
+                <div className="alert-content">{bookingAnalytics.upcomingBookings} Upcoming bookings</div>
+              </div>
+            )}
+            {recentData.upcomingReturns?.length > 0 && (
+              <div className="alert-item">
+                <div className="alert-icon red"><AlertCircle size={14}/></div>
+                <div className="alert-content">{recentData.upcomingReturns.length} Allocations to be returned soon</div>
+              </div>
+            )}
+            {maintenance.pending === 0 && bookingAnalytics.upcomingBookings === 0 && recentData.upcomingReturns?.length === 0 && (
+               <div className="text-secondary text-sm p-2">You are all caught up!</div>
+            )}
           </div>
         </div>
       </div>
@@ -200,29 +278,15 @@ const Dashboard = () => {
           <div className="card-header">
             <h3 className="card-title">Recent Activity</h3>
           </div>
-          <div className="activity-list">
-            <div className="activity-item">
-              <Laptop size={16} className="activity-icon" />
-              <div className="activity-content">Laptop AF-1004 allocated to Priya Singh</div>
-              <div className="activity-time">2 min ago</div>
-            </div>
-            <div className="activity-item">
-              <Printer size={16} className="activity-icon" />
-              <div className="activity-content">Projector AF-045 returned by Aman Verma</div>
-              <div className="activity-time">15 min ago</div>
-            </div>
-            <div className="activity-item">
-              <Wrench size={16} className="activity-icon" />
-              <div className="activity-content">Maintenance request for AF-098 approved</div>
-              <div className="activity-time">45 min ago</div>
-            </div>
-            <div className="activity-item">
-              <Calendar size={16} className="activity-icon" />
-              <div className="activity-content">Meeting Room B booked by HR Department</div>
-              <div className="activity-time">1 hr ago</div>
-            </div>
+          <div className="activity-list" style={{ flex: 1, overflowY: 'auto' }}>
+            {recentData.recentActivity?.length > 0 ? recentData.recentActivity.map(act => (
+              <div key={act.id} className="activity-item">
+                <CheckCircle size={16} className="activity-icon text-blue-500" />
+                <div className="activity-content">{act.action} - {act.entity} #{act.entityId} ({act.user?.name})</div>
+                <div className="activity-time">{new Date(act.createdAt).toLocaleDateString()}</div>
+              </div>
+            )) : <div className="text-secondary text-sm p-2">No recent activity.</div>}
           </div>
-          <div className="view-all">View all activity</div>
         </div>
 
         {/* Assets by Category */}
@@ -252,13 +316,13 @@ const Dashboard = () => {
               </ResponsiveContainer>
             </div>
             <div className="custom-legend" style={{ flex: 1.5 }}>
-              {categoryData.map(item => (
+              {categoryData.length > 0 ? categoryData.map(item => (
                 <div className="legend-item" key={item.name}>
                   <span className="legend-dot" style={{ backgroundColor: item.color }}></span>
                   <span>{item.name}</span>
                   <span className="legend-value">{item.value} ({item.percent})</span>
                 </div>
-              ))}
+              )) : <div className="text-secondary text-sm">No data</div>}
             </div>
           </div>
         </div>
