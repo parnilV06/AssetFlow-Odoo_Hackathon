@@ -1,0 +1,83 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: var(--header-height);
+  padding: 0 var(--spacing-xl);
+  background-color: var(--bg-main);
+  position: sticky;
+  top: 0;
+  z-index: 90;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.breadcrumb-link {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.breadcrumb-separator {
+  color: var(--text-tertiary);
+  margin: 0 4px;
+}
+
+.breadcrumb-current {
+  color: var(--text-main);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.notification-btn {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  transition: background-color 0.2s ease;
+  background-color: white;
+  border: 1px solid var(--border-color);
+}
+
+.notification-btn:hover {
+  background-color: var(--bg-surface);
+  color: var(--text-main);
+}
+
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  background-color: var(--primary);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+.header-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+}

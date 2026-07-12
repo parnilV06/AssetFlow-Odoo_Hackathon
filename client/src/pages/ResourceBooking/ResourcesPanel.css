@@ -1,0 +1,87 @@
+.resources-panel {
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  height: 100%;
+}
+
+.resources-header {
+  padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
+}
+
+.resources-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.resources-list {
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--spacing-sm) var(--spacing-lg);
+  overflow-y: auto;
+}
+
+.resource-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: 10px var(--spacing-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 2px;
+}
+
+.resource-item:hover {
+  background-color: var(--bg-main);
+}
+
+.resource-item.selected {
+  background-color: var(--primary);
+  color: white;
+}
+
+.resource-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-main);
+  color: var(--text-secondary);
+}
+
+.resource-item.selected .resource-icon-wrapper {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.resource-name {
+  flex: 1;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.resource-item.selected .resource-name {
+  color: white;
+}
+
+.resource-expand-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  cursor: pointer;
+}
+
+.resource-item.selected .resource-expand-btn {
+  color: white;
+}

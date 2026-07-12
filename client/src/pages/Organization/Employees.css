@@ -1,0 +1,64 @@
+/* Reusing the common page layout styles from Departments for consistency */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--header-height) - var(--spacing-lg) * 2);
+}
+
+.page-header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.02em;
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.page-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.text-main {
+  color: var(--text-main);
+}
+
+/* Employee Specific Styles */
+.employee-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.employee-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border-color);
+}
+
+.employee-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.employee-email {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}

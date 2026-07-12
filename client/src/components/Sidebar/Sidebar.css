@@ -25,7 +25,7 @@
 }
 
 .logo-image {
-  height: 40px;
+  height: 85px;
   width: auto;
   object-fit: contain;
 }
@@ -119,7 +119,8 @@
 .submenu-item.active {
   color: var(--primary);
   font-weight: 600;
-  background-color: #eff6ff; /* light blue */
+  background-color: #eff6ff;
+  /* light blue */
 }
 
 /* Footer Profile Section */
@@ -141,7 +142,7 @@
 
 .user-profile:hover {
   border-color: #d1d5db;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .user-avatar {

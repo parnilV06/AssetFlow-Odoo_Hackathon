@@ -1,0 +1,19 @@
+.chart-card {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-lg);
+  height: 360px; /* Fixed height for consistent chart grids */
+}
+
+.chart-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: var(--spacing-lg);
+}
+
+.chart-content {
+  flex: 1;
+  width: 100%;
+  position: relative; /* For responsive recharts container */
+}
