@@ -8,7 +8,7 @@ import {
 import './Sidebar.css';
 
 const navItems = [
-  { name: 'Dashboard', icon: Home, path: '/' },
+  { name: 'Dashboard', icon: Home, path: '/dashboard' },
   { 
     name: 'Organization', 
     icon: Users, 
