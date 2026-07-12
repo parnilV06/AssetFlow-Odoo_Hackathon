@@ -50,8 +50,8 @@ const Employees = () => {
     try {
       const res = await employeeService.getAll({ page: currentPage, limit: 10, search: searchTerm });
       if (res.success) {
-        setEmployees(res.data.employees);
-        setPagination(res.data.pagination);
+        setEmployees(res.data || []);
+        setPagination({ total: (res.data || []).length, pages: 1 });
       } else {
         setError('Failed to load employees');
       }

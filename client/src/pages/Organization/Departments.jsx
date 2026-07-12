@@ -38,7 +38,7 @@ const Departments = () => {
     // Fetch employees for "Head" dropdown (maybe only if Admin, but everyone can see employees generally)
     employeeService.getAll({ limit: 100 }) // Adjust limit for a real app, maybe autocomplete
       .then(res => {
-        if (res.success) setEmployees(res.data.employees);
+        if (res.success) setEmployees(res.data || []);
       })
       .catch(err => console.error("Failed to load employees", err));
   }, []);
@@ -48,8 +48,8 @@ const Departments = () => {
     try {
       const res = await departmentService.getAll({ page: currentPage, limit: 10, search: searchTerm });
       if (res.success) {
-        setDepartments(res.data.departments);
-        setPagination(res.data.pagination);
+        setDepartments(res.data || []);
+        setPagination({ total: (res.data || []).length, pages: 1 });
       } else {
         setError('Failed to load departments');
       }

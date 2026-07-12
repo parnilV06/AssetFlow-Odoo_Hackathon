@@ -83,7 +83,7 @@ const Maintenance = () => {
 
     if (isAdmin) {
       employeeService.getAll({ limit: 500 }).then(res => {
-        if (res.success) setTechnicians(res.data.employees);
+        if (res.success) setTechnicians(res.data || []);
       }).catch(console.error);
     }
   }, []);

@@ -108,7 +108,7 @@ const AssetDirectory = () => {
         departmentService.getAll({ limit: 100 })
       ]);
       if (catRes.success) setCategories(Array.isArray(catRes.data) ? catRes.data : catRes.data.categories || []);
-      if (deptRes.success) setDepartments(deptRes.data.departments || []);
+      if (deptRes.success) setDepartments(Array.isArray(deptRes.data) ? deptRes.data : deptRes.data.departments || []);
     } catch (err) {
       console.error("Failed to load metadata", err);
     }
@@ -128,8 +128,8 @@ const AssetDirectory = () => {
       
       const res = await assetService.getAll(params);
       if (res.success) {
-        setAssets(res.data.assets);
-        setPagination(res.data.pagination);
+        setAssets(res.data || []);
+        setPagination({ total: (res.data || []).length, pages: 1 });
       } else {
         setError('Failed to load assets');
       }

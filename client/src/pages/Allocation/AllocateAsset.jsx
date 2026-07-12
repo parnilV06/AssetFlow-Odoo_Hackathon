@@ -34,7 +34,7 @@ const AllocateAsset = () => {
       employeeService.getAll({ limit: 500 })
     ]).then(([assetsRes, empRes]) => {
       if (assetsRes.success) setAssets(assetsRes.data.assets);
-      if (empRes.success) setEmployees(empRes.data.employees);
+      if (empRes.success) setEmployees(empRes.data || []);
     }).catch(err => console.error("Error loading dropdown data", err));
   }, []);
 
