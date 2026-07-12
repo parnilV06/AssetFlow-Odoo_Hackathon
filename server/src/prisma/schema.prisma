@@ -1,13 +1,334 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
+// ============================================================================
+// AssetFlow — Enterprise Asset & Resource Management System
+// Prisma Schema — Phase 1: Database Foundation
+// ============================================================================
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+// ============================================================================
+// ENUMS
+// ============================================================================
+
+enum UserRole {
+  Admin
+  AssetManager
+  DepartmentHead
+  Employee
+}
+
+enum AssetStatus {
+  Available
+  Allocated
+  Reserved
+  UnderMaintenance
+  Lost
+  Retired
+  Disposed
+}
+
+enum BookingStatus {
+  Upcoming
+  Ongoing
+  Completed
+  Cancelled
+}
+
+enum MaintenanceStatus {
+  Pending
+  Approved
+  Rejected
+  Assigned
+  InProgress
+  Resolved
+}
+
+enum TransferStatus {
+  Requested
+  Approved
+  Rejected
+  Completed
+}
+
+enum AuditStatus {
+  Open
+  Closed
+}
+
+// ============================================================================
+// MODELS
+// ============================================================================
+
+/// Organizational department. Top-level grouping for users.
+model Department {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  code      String   @unique            // short code, e.g. "ENG", "HR"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  users User[]
+
+  @@map("departments")
+}
+
+/// System user. Belongs to exactly one department.
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         UserRole @default(Employee)
+  isActive     Boolean  @default(true)
+  departmentId String   @db.Uuid
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  department          Department           @relation(fields: [departmentId], references: [id])
+  allocations         Allocation[]
+  bookings            Booking[]
+  maintenanceRequests MaintenanceRequest[]
+  notifications       Notification[]
+  activityLogs        ActivityLog[]
+
+  // Transfer requests where this user is the requester
+  transferRequestsMade    TransferRequest[] @relation("TransferRequester")
+  // Transfer requests where this user approved/rejected
+  transferRequestsHandled TransferRequest[] @relation("TransferApprover")
+
+  // Audit reports conducted by this user
+  auditReports AuditReport[]
+
+  @@index([departmentId], name: "idx_user_departmentId")
+  @@index([role], name: "idx_user_role")
+  @@map("users")
+}
+
+/// Logical grouping for assets (e.g. "Laptops", "Projectors", "Vehicles").
+model Category {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  assets Asset[]
+
+  @@map("categories")
+}
+
+/// A trackable organizational asset.
+/// IMPORTANT: Current owner is NOT stored here — derive it from the latest Allocation.
+model Asset {
+  id           String      @id @default(uuid()) @db.Uuid
+  name         String
+  assetTag     String      @unique          // human-readable tag, e.g. "AST-00142"
+  serialNumber String?     @unique          // manufacturer serial; nullable for non-serialized items
+  description  String?
+  status       AssetStatus @default(Available)
+  categoryId   String      @db.Uuid
+  purchaseDate DateTime?
+  purchaseCost Decimal?    @db.Decimal(12, 2)
+  warrantyEnd  DateTime?
+  location     String?                       // physical location / room
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  // Relations
+  category            Category             @relation(fields: [categoryId], references: [id])
+  allocations         Allocation[]
+  bookings            Booking[]
+  maintenanceRequests MaintenanceRequest[]
+  auditReports        AuditReport[]
+  transferRequests    TransferRequest[]
+
+  @@index([categoryId], name: "idx_asset_categoryId")
+  @@index([status], name: "idx_asset_status")
+  @@map("assets")
+}
+
+/// Immutable record of asset assignment to a user.
+/// Never update — always INSERT a new row to preserve full history.
+model Allocation {
+  id           String    @id @default(uuid()) @db.Uuid
+  assetId      String    @db.Uuid
+  userId       String    @db.Uuid
+  allocatedAt  DateTime  @default(now())
+  returnedAt   DateTime?                    // null = currently allocated
+  notes        String?
+  allocatedBy  String?   @db.Uuid          // who performed the allocation (admin/manager UUID)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  // Relations
+  asset Asset @relation(fields: [assetId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  @@index([assetId], name: "idx_allocation_assetId")
+  @@index([userId], name: "idx_allocation_userId")
+  @@index([allocatedAt], name: "idx_allocation_allocatedAt")
+  @@map("allocations")
+}
+
+/// Request to transfer an asset from one user/department to another.
+model TransferRequest {
+  id              String         @id @default(uuid()) @db.Uuid
+  assetId         String         @db.Uuid
+  requesterId     String         @db.Uuid
+  fromDescription String                      // textual: user name / dept at time of request
+  toDescription   String                      // textual: target user name / dept
+  status          TransferStatus @default(Requested)
+  reason          String?
+  approverId      String?        @db.Uuid     // who approved / rejected
+  resolvedAt      DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  asset     Asset @relation(fields: [assetId], references: [id])
+  requester User  @relation("TransferRequester", fields: [requesterId], references: [id])
+  approver  User? @relation("TransferApprover", fields: [approverId], references: [id])
+
+  @@index([assetId], name: "idx_transfer_assetId")
+  @@index([status], name: "idx_transfer_status")
+  @@map("transfer_requests")
+}
+
+/// Time-bound reservation of an asset.
+/// startTime + endTime enable overlap detection queries.
+model Booking {
+  id        String        @id @default(uuid()) @db.Uuid
+  assetId   String        @db.Uuid
+  userId    String        @db.Uuid
+  startTime DateTime
+  endTime   DateTime
+  purpose   String?
+  status    BookingStatus @default(Upcoming)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  // Relations
+  asset Asset @relation(fields: [assetId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+  // Composite index on asset + time range for fast overlap detection
+  @@index([assetId, startTime, endTime], name: "idx_booking_overlap")
+  @@index([userId], name: "idx_booking_userId")
+  @@index([status], name: "idx_booking_status")
+  @@index([startTime], name: "idx_booking_startTime")
+  @@index([endTime], name: "idx_booking_endTime")
+  @@map("bookings")
+}
+
+/// Maintenance / repair request raised by a user for an asset.
+model MaintenanceRequest {
+  id          String            @id @default(uuid()) @db.Uuid
+  assetId     String            @db.Uuid
+  requesterId String            @db.Uuid
+  title       String
+  description String?
+  priority    Int               @default(3)   // 1 = Critical … 5 = Low
+  status      MaintenanceStatus @default(Pending)
+  resolvedAt  DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  // Relations
+  asset     Asset @relation(fields: [assetId], references: [id])
+  requester User  @relation(fields: [requesterId], references: [id])
+
+  @@index([assetId], name: "idx_maintenance_assetId")
+  @@index([requesterId], name: "idx_maintenance_requesterId")
+  @@index([status], name: "idx_maintenance_status")
+  @@map("maintenance_requests")
+}
+
+/// A scheduled audit cycle (e.g. "Q3 2026 Audit").
+model AuditCycle {
+  id        String      @id @default(uuid()) @db.Uuid
+  name      String                           // e.g. "Q3 2026 Full Audit"
+  status    AuditStatus @default(Open)
+  startDate DateTime
+  endDate   DateTime?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  // Relations
+  reports AuditReport[]
+
+  @@map("audit_cycles")
+}
+
+/// Individual audit finding for one asset inside an audit cycle.
+model AuditReport {
+  id           String   @id @default(uuid()) @db.Uuid
+  auditCycleId String   @db.Uuid
+  assetId      String   @db.Uuid
+  auditorId    String   @db.Uuid
+  condition    String?                       // physical condition observed
+  locationSeen String?                       // where the asset was found
+  remarks      String?
+  isVerified   Boolean  @default(false)      // auditor confirmed asset present
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  auditCycle AuditCycle @relation(fields: [auditCycleId], references: [id])
+  asset      Asset      @relation(fields: [assetId], references: [id])
+  auditor    User       @relation(fields: [auditorId], references: [id])
+
+  // One report per asset per cycle
+  @@unique([auditCycleId, assetId], name: "uq_audit_cycle_asset")
+  @@index([auditCycleId], name: "idx_audit_cycleId")
+  @@index([assetId], name: "idx_audit_assetId")
+  @@map("audit_reports")
+}
+
+/// In-app notification stored in database. No WebSockets.
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  link      String?                          // optional deep-link for the frontend
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, isRead], name: "idx_notification_user_read")
+  @@index([createdAt], name: "idx_notification_createdAt")
+  @@map("notifications")
+}
+
+/// Append-only activity log for compliance and debugging.
+model ActivityLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @db.Uuid
+  action     String                          // e.g. "ASSET_CREATED", "BOOKING_CANCELLED"
+  entityType String                          // e.g. "Asset", "Booking"
+  entityId   String?  @db.Uuid              // FK-less reference to the entity
+  metadata   Json?                           // additional context as JSON
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId], name: "idx_activity_userId")
+  @@index([entityType, entityId], name: "idx_activity_entity")
+  @@index([createdAt], name: "idx_activity_createdAt")
+  @@map("activity_logs")
 }
