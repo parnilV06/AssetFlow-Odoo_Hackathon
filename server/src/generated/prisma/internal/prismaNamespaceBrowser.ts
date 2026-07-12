@@ -151,6 +151,7 @@ export const AllocationScalarFieldEnum = {
   assetId: 'assetId',
   userId: 'userId',
   allocatedAt: 'allocatedAt',
+  expectedReturn: 'expectedReturn',
   returnedAt: 'returnedAt',
   notes: 'notes',
   allocatedBy: 'allocatedBy',
