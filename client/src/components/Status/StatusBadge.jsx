@@ -7,12 +7,26 @@ const StatusBadge = ({ status }) => {
       case 'active':
       case 'available':
       case 'approved':
+      case 'verified':
+      case 'completed':
         return 'status-active';
       case 'inactive':
       case 'rejected':
         return 'status-inactive';
       case 'pending':
         return 'status-pending';
+      case 'allocated':
+      case 'in progress':
+        return 'status-allocated';
+      case 'reserved':
+      case 'damaged':
+        return 'status-reserved';
+      case 'under maintenance':
+        return 'status-maintenance';
+      case 'lost':
+      case 'missing':
+        return 'status-lost';
+      case 'scheduled':
       default:
         return 'status-default';
     }

@@ -27,7 +27,48 @@
   color: var(--text-secondary);
 }
 
+.status-allocated {
+  background-color: #dbeafe; /* Light blue */
+  color: #2563eb; /* Blue */
+}
+
+.status-reserved {
+  background-color: #ffedd5; /* Light orange */
+  color: #ea580c; /* Orange */
+}
+
+.status-maintenance {
+  background-color: #f3e8ff; /* Light purple */
+  color: #9333ea; /* Purple */
+}
+
+.status-lost {
+  background-color: #fee2e2; /* Light red */
+  color: #dc2626; /* Red */
+}
+
 .role-badge {
   background-color: #e0f2fe; /* Light blue */
   color: #0369a1; /* Dark blue */
+}
+
+/* Priority Badges */
+.priority-high {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
+
+.priority-medium {
+  background-color: #ffedd5;
+  color: #f97316;
+}
+
+.priority-low {
+  background-color: #dcfce7;
+  color: #22c55e;
+}
+
+.priority-default {
+  background-color: #f3f4f6;
+  color: #6b7280;
 }
