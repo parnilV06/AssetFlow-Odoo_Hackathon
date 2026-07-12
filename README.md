@@ -6,567 +6,285 @@
 
 # Enterprise Asset & Resource Management System
 
-### **Track • Allocate • Maintain**
+### Track • Allocate • Maintain
 
-*A centralized ERP platform for managing enterprise assets, shared resources, maintenance workflows, audits, and operational analytics.*
+A hackathon-stage asset and resource management platform with a Prisma-backed backend, JWT authentication, role-based access control, and a React/Vite dashboard shell.
 
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react)
-![Vite](https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite)
 ![Express](https://img.shields.io/badge/Express.js-Backend-000000?style=for-the-badge&logo=express)
 ![Prisma](https://img.shields.io/badge/Prisma-ORM-2D3748?style=for-the-badge&logo=prisma)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Neon-4169E1?style=for-the-badge&logo=postgresql)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16%2B-4169E1?style=for-the-badge&logo=postgresql)
 ![JWT](https://img.shields.io/badge/JWT-Authentication-black?style=for-the-badge&logo=jsonwebtokens)
 
 </div>
 
 ---
 
-# 📖 Overview
+## Overview
 
-AssetFlow is a modern **Enterprise Asset & Resource Management System (ERP)** built to simplify how organizations register, allocate, maintain, audit, and monitor physical assets.
+AssetFlow is an implementation-focused prototype for managing organizational assets, allocations, bookings, maintenance requests, and role-aware dashboards. The repository currently contains:
 
-Instead of relying on spreadsheets or paper logs, AssetFlow provides a centralized platform with role-based workflows, asset lifecycle management, resource booking, maintenance approvals, audit cycles, dashboards, and analytics.
+- A Node.js + Express backend with route/controller/service layers
+- A Prisma schema targeting PostgreSQL
+- JWT-based auth and role middleware
+- A React + Vite client with a protected dashboard layout and multiple feature pages
 
-The platform is designed to be industry-independent and can be used by:
-
-- 🏢 Enterprises
-- 🏫 Educational Institutions
-- 🏥 Hospitals
-- 🏭 Manufacturing Industries
-- 🏛 Government Organizations
-- 🏢 Corporate Offices
+This README reflects the state of the repository as currently checked in, not a future roadmap.
 
 ---
 
-# ✨ Features
-
-## 🔐 Authentication
-
-- Secure Login
-- Employee Signup
-- JWT Authentication
-- Password Encryption (bcrypt)
-- Role Based Access Control (RBAC)
-
----
-
-## 📊 Dashboard
-
-Real-time operational insights including:
-
-- Assets Available
-- Assets Allocated
-- Maintenance Today
-- Active Bookings
-- Pending Transfers
-- Upcoming Returns
-- Overdue Returns
-
-Visualizations
-
-- Asset Utilization
-- Maintenance Trends
-- Department Summary
-- Recent Activities
-- Notifications
-
----
-
-## 🏢 Organization Setup
-
-### Departments
-
-- Create Department
-- Edit Department
-- Department Hierarchy
-- Assign Department Head
-- Activate / Deactivate
-
-### Asset Categories
-
-- Electronics
-- Furniture
-- Vehicles
-- Office Equipment
-- Custom Categories
-
-### Employee Directory
-
-- Employee Management
-- Role Assignment
-- Department Mapping
-- Status Management
-
----
-
-## 💻 Asset Management
-
-Manage complete asset lifecycle.
-
-- Register Assets
-- Asset Tag Generation
-- Serial Numbers
-- Asset Images
-- Location Tracking
-- Condition Tracking
-- Asset History
-
-Lifecycle Status
-
-- Available
-- Allocated
-- Reserved
-- Under Maintenance
-- Lost
-- Retired
-- Disposed
-
----
-
-## 📦 Asset Allocation
-
-- Allocate Assets
-- Return Assets
-- Transfer Requests
-- Allocation History
-- Expected Return Date
-- Conflict Validation
-
----
-
-## 📅 Resource Booking
-
-Book shared resources.
-
-Examples
-
-- Meeting Rooms
-- Conference Rooms
-- Projectors
-- Company Vehicles
-
-Supports
-
-- Calendar View
-- Time Slot Booking
-- Overlap Validation
-- Booking Status
-- Reminders
-
----
-
-## 🔧 Maintenance
-
-Maintenance Workflow
-
-```text
-Pending
-   │
-Approved
-   │
-Technician Assigned
-   │
-In Progress
-   │
-Resolved
-```
-
-Features
-
-- Raise Request
-- Approval Workflow
-- Technician Assignment
-- Asset Status Updates
-- Maintenance History
-
----
-
-## 📋 Asset Audit
-
-- Audit Cycle Creation
-- Auditor Assignment
-- Asset Verification
-- Discrepancy Reports
-- Audit History
-
----
-
-## 📈 Reports
-
-Generate insights for
-
-- Asset Utilization
-- Department Allocation
-- Maintenance Frequency
-- Booking Heatmaps
-- Idle Assets
-- Upcoming Maintenance
-
----
-
-## 🔔 Notifications
-
-Real-time notifications
-
-- Asset Assigned
-- Booking Reminder
-- Maintenance Approved
-- Transfer Approved
-- Audit Completed
-- Overdue Return Alerts
-
----
-
-# 👥 User Roles
-
-## 👑 Admin
-
-- Manage Departments
-- Manage Categories
-- Manage Employees
-- Assign Roles
-- View Reports
-- Create Audit Cycles
-
----
-
-## 📦 Asset Manager
-
-- Register Assets
-- Allocate Assets
-- Approve Transfers
-- Approve Maintenance
-- Verify Returns
-
----
-
-## 🏢 Department Head
-
-- Department Assets
-- Department Approvals
-- Book Resources
-
----
-
-## 👨‍💼 Employee
-
-- View Assigned Assets
-- Raise Maintenance Requests
-- Book Resources
-- Request Transfers
-- Initiate Returns
-
----
-
-# 🛠 Tech Stack
-
-## Frontend
-
-- React (Vite)
-- React Router
-- Axios
-- React Context API
-- CSS Modules / Vanilla CSS
-- Recharts
-
----
-
-## Backend
-
-- Express.js
-- Prisma ORM
-
----
-
-## Database
-
-- PostgreSQL
-- Neon Database
-
----
-
-## Authentication
-
-- JWT
-- bcrypt
-
----
-
-## Deployment
-
-| Service | Platform |
-|----------|----------|
-| Frontend | Vercel |
-| Backend | Render |
-| Database | Neon PostgreSQL |
-
----
-
-# 📂 Project Structure
-
-```text
-AssetFlow
-│
-├── client/
-│   │
-│   ├── src/
-│   │   │
-│   │   ├── assets/
-│   │   │
-│   │   ├── components/
-│   │   │   ├── Sidebar/
-│   │   │   ├── Navbar/
-│   │   │   ├── Cards/
-│   │   │   ├── Table/
-│   │   │   ├── Modal/
-│   │   │   ├── Button/
-│   │   │   ├── Input/
-│   │   │   └── Loader/
-│   │   │
-│   │   ├── layouts/
-│   │   │   └── DashboardLayout.jsx
-│   │   │
-│   │   ├── pages/
-│   │   │   ├── Login/
-│   │   │   ├── Dashboard/
-│   │   │   ├── Assets/
-│   │   │   ├── Employees/
-│   │   │   ├── Departments/
-│   │   │   ├── Categories/
-│   │   │   ├── Allocation/
-│   │   │   ├── Booking/
-│   │   │   ├── Maintenance/
-│   │   │   ├── Audit/
-│   │   │   ├── Reports/
-│   │   │   └── Notifications/
-│   │   │
-│   │   ├── services/
-│   │   │   ├── api.js
-│   │   │   ├── auth.js
-│   │   │   ├── asset.js
-│   │   │   ├── booking.js
-│   │   │   └── employee.js
-│   │   │
-│   │   ├── hooks/
-│   │   ├── context/
-│   │   │   └── AuthContext.jsx
-│   │   ├── styles/
-│   │   ├── utils/
-│   │   └── App.jsx
-│   │
-│   └── package.json
-│
-├── server/
-│   │
-│   ├── src/
-│   │   │
-│   │   ├── config/
-│   │   │   └── prisma.js
-│   │   │
-│   │   ├── middleware/
-│   │   │   ├── auth.js
-│   │   │   ├── role.js
-│   │   │   └── error.js
-│   │   │
-│   │   ├── routes/
-│   │   │   ├── auth.routes.js
-│   │   │   ├── employee.routes.js
-│   │   │   ├── asset.routes.js
-│   │   │   ├── booking.routes.js
-│   │   │   ├── allocation.routes.js
-│   │   │   ├── maintenance.routes.js
-│   │   │   └── dashboard.routes.js
-│   │   │
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   ├── prisma/
-│   │   │   └── schema.prisma
-│   │   ├── utils/
-│   │   └── app.js
-│   │
-│   ├── server.js
-│   └── package.json
-│
-├── README.md
-└── .gitignore
-```
-
----
-
-# 🚀 Getting Started
-
-## 1. Clone the Repository
-
-```bash
-git clone https://github.com/your-username/AssetFlow.git
-
-cd AssetFlow
-```
-
----
-
-## 2. Install Dependencies
-
-### Frontend
-
-```bash
-cd client
-
-npm install
-```
+## What is implemented today
 
 ### Backend
 
-```bash
-cd ../server
+The backend is organized as Router → Controller → Service → Prisma and exposes modules for:
 
-npm install
+- Authentication: signup, login, current-user lookup, logout, forgot-password stub
+- Departments, employees, categories
+- Assets: create/update/list/detail/history/QR endpoints
+- Allocations: allocate, return, transfer
+- Bookings: create, cancel, list, calendar view, update status
+- Maintenance: create, list, detail, update status workflow
+- Dashboard analytics: role-based summaries and recent activity data
+
+The server entry point is [server/server.js](server/server.js), and the main API router is [server/src/routes/index.js](server/src/routes/index.js).
+
+### Frontend
+
+The client uses Vite + React Router and currently includes route-level pages for:
+
+- Login
+- Dashboard
+- Organization / departments and employees
+- Assets
+- Allocation
+- Audit
+- Reports
+- Maintenance
+- Resource booking
+- Notifications
+- Settings
+
+The shell layout is defined in [client/src/layouts/DashboardLayout.jsx](client/src/layouts/DashboardLayout.jsx), and the top-level routes are declared in [client/src/App.jsx](client/src/App.jsx).
+
+### Database model
+
+The Prisma schema in [server/src/prisma/schema.prisma](server/src/prisma/schema.prisma) defines the core models:
+
+- Department
+- User
+- Category
+- Asset
+- Allocation
+- TransferRequest
+- Booking
+- MaintenanceRequest
+- AuditCycle
+- AuditReport
+- Notification
+- ActivityLog
+
+It also defines enums for user roles and status values such as AssetStatus, BookingStatus, MaintenanceStatus, TransferStatus, and AuditStatus.
+
+---
+
+## Supported roles
+
+The auth and role middleware support the following roles from the Prisma enum:
+
+- ADMIN
+- ASSET_MANAGER
+- DEPARTMENT_HEAD
+- EMPLOYEE
+
+Role-gated access is enforced on several routes through [server/src/middleware/role.middleware.js](server/src/middleware/role.middleware.js).
+
+---
+
+## Current feature status
+
+### Functional in the codebase
+
+- User registration and login with password hashing
+- JWT authentication and current-user retrieval
+- Department, employee, category, and asset CRUD-style services
+- Asset allocation, return, and transfer workflows
+- Booking creation with overlap checks and status transitions
+- Maintenance request creation and workflow updates
+- Dashboard summary queries for different roles
+- Prisma-backed persistence with PostgreSQL
+
+### Present but not fully wired yet
+
+- The frontend contains multiple feature pages and a dashboard shell, but the client service files under [client/src/services](client/src/services) are still empty stubs in the current checkout.
+- The forgot-password endpoint is implemented as a stub and returns a 501 response.
+- Some route pages appear to be UI-first shells rather than fully connected to live API calls.
+
+---
+
+## Tech stack
+
+### Frontend
+
+- React 19
+- Vite 8
+- React Router
+- Recharts
+- lucide-react
+- Axios (available in package manifest, but service files are not yet populated)
+
+### Backend
+
+- Node.js
+- Express
+- Prisma ORM
+- PostgreSQL via Prisma adapter
+- JWT + bcrypt + zod
+
+---
+
+## Project structure
+
+```text
+AssetFlow-Odoo_Hackathon/
+├── client/
+│   ├── public/
+│   └── src/
+│       ├── App.jsx
+│       ├── components/
+│       ├── context/
+│       ├── layouts/
+│       ├── pages/
+│       └── services/
+├── docs/
+├── server/
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── prisma/
+│   │   ├── routes/
+│   │   └── services/
+│   └── server.js
+└── README.md
 ```
 
 ---
 
-# ⚙️ Environment Variables
+## Getting started
 
-Create a `.env` file inside the **server** directory.
+### 1. Clone the repository
+
+```bash
+git clone <your-fork-url>
+cd AssetFlow-Odoo_Hackathon
+```
+
+### 2. Install dependencies
+
+Frontend:
+
+```bash
+cd client
+npm install
+```
+
+Backend:
+
+```bash
+cd ../server
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env` file in the server folder:
 
 ```env
 PORT=5000
-
-DATABASE_URL="your_neon_database_url"
-
-JWT_SECRET="your_secret_key"
-
+DATABASE_URL="postgresql://<user>:<password>@<host>:<port>/<database>?schema=public"
+JWT_SECRET="replace-with-a-secure-secret"
 NODE_ENV=development
 ```
 
----
+### 4. Prepare the database
 
-# 🗄 Prisma
-
-Generate Prisma Client
+From the server directory:
 
 ```bash
-npx prisma generate
+npm run db:generate
+npm run db:migrate:dev
 ```
 
-Run Migrations
+If you prefer to push the schema directly instead of migrating:
 
 ```bash
-npx prisma migrate dev
+npm run db:push
 ```
 
-Open Prisma Studio
+### 5. Run the app
+
+Backend:
 
 ```bash
-npx prisma studio
-```
-
----
-
-# ▶️ Run the Project
-
-Backend
-
-```bash
+cd server
 npm run dev
 ```
 
-Frontend
+Frontend:
 
 ```bash
+cd client
 npm run dev
 ```
 
----
-
-# 🌐 Deployment
-
-## Frontend
-
-Deploy using **Vercel**
-
-```bash
-vercel
-```
+The backend will expose the API under `/api`, and the frontend will run from Vite's dev server.
 
 ---
 
-## Backend
+## Available scripts
 
-Deploy using **Render**
+### Server
 
-Configure
+- `npm run dev` — start the backend with nodemon
+- `npm start` — start the backend in normal Node mode
+- `npm run db:generate` — generate Prisma client
+- `npm run db:migrate:dev` — create and apply migrations
+- `npm run db:migrate:deploy` — apply existing migrations
+- `npm run db:push` — sync schema without migrations
+- `npm run db:seed` — run Prisma seed
+- `npm run db:studio` — open Prisma Studio
+- `npm run db:reset` — reset the database
 
-- Build Command
+### Client
 
-```bash
-npm install
-```
-
-Start Command
-
-```bash
-node server.js
-```
-
----
-
-## Database
-
-Hosted on **Neon PostgreSQL**
+- `npm run dev` — start Vite dev server
+- `npm run build` — build the frontend bundle
+- `npm run lint` — run ESLint
+- `npm run preview` — preview the built app
 
 ---
 
-# 📸 Screenshots
+## Notes for contributors
 
-| Login | Dashboard |
-|-------|-----------|
-| Add Screenshot | Add Screenshot |
-
-| Assets | Reports |
-|--------|----------|
-| Add Screenshot | Add Screenshot |
+- The backend code is the most complete part of the repository and should be treated as the primary source of truth for implemented behavior.
+- The frontend includes many route pages and a polished layout, but live API integration is still a follow-up task in the current state.
+- The documentation in [docs](docs) may be useful for understanding the intended architecture, although the implementation should always be checked directly in the code.
 
 ---
 
-# 🚀 Future Enhancements
+## Contributors
 
-- QR Code Scanning
-- Barcode Support
-- Mobile App
-- RFID Integration
-- AI Predictive Maintenance
-- Email Notifications
-- Slack Integration
-- Microsoft Teams Integration
-- Multi-Organization Support
+Built during the hackathon by:
+
+- Parnil Vyawahare
+- Sasmit Narnaware
+- Raina George
+- Aayushman Shukla
 
 ---
 
-# 👨‍💻 Contributors
+## License
 
-Built with ❤️ during a Hackathon.
-Parnil Vyawahare
-Sasmit Narnaware
-Raina George
-Aayushman Shukla
-
----
-
-# 📄 License
-
-This project is licensed under the **MIT License**.
-
----
-
-<div align="center">
-
-## AssetFlow
-
-### **Track • Allocate • Maintain**
-
-*A Modern Enterprise Asset & Resource Management Platform*
-
-⭐ If you found this project useful, consider giving it a **Star**.
-
-</div>
+No dedicated LICENSE file is currently present in the repository root. The server package declares ISC in [server/package.json](server/package.json).
