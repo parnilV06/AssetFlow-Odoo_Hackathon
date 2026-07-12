@@ -33,7 +33,7 @@ const AllocateAsset = () => {
       assetService.getAll({ limit: 500 }), // In a real app, use an autocomplete search
       employeeService.getAll({ limit: 500 })
     ]).then(([assetsRes, empRes]) => {
-      if (assetsRes.success) setAssets(assetsRes.data.assets);
+      if (assetsRes.success) setAssets(assetsRes.data || []);
       if (empRes.success) setEmployees(empRes.data || []);
     }).catch(err => console.error("Error loading dropdown data", err));
   }, []);
