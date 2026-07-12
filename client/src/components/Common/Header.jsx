@@ -51,7 +51,11 @@ const Header = () => {
             width="350px"
           />
         )}
-        <button className="icon-btn" aria-label="Settings">
+        <button 
+          className="icon-btn" 
+          aria-label="Settings"
+          onClick={() => navigate('/settings')}
+        >
           <Settings size={20} />
         </button>
         <button 
