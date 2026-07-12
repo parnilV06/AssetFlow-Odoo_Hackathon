@@ -563,10 +563,6 @@ export type AuditReportUncheckedUpdateManyWithoutAuditCycleNestedInput = {
   deleteMany?: Prisma.AuditReportScalarWhereInput | Prisma.AuditReportScalarWhereInput[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type AuditReportCreateWithoutAuditorInput = {
   id?: string
   condition?: string | null

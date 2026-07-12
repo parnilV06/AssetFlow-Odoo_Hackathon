@@ -47,6 +47,9 @@ export type AssetMinAggregateOutputType = {
   purchaseCost: runtime.Decimal | null
   warrantyEnd: Date | null
   location: string | null
+  condition: string | null
+  isBookable: boolean | null
+  imageUrl: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -64,6 +67,9 @@ export type AssetMaxAggregateOutputType = {
   purchaseCost: runtime.Decimal | null
   warrantyEnd: Date | null
   location: string | null
+  condition: string | null
+  isBookable: boolean | null
+  imageUrl: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -81,6 +87,9 @@ export type AssetCountAggregateOutputType = {
   purchaseCost: number
   warrantyEnd: number
   location: number
+  condition: number
+  isBookable: number
+  imageUrl: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -108,6 +117,9 @@ export type AssetMinAggregateInputType = {
   purchaseCost?: true
   warrantyEnd?: true
   location?: true
+  condition?: true
+  isBookable?: true
+  imageUrl?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -125,6 +137,9 @@ export type AssetMaxAggregateInputType = {
   purchaseCost?: true
   warrantyEnd?: true
   location?: true
+  condition?: true
+  isBookable?: true
+  imageUrl?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -142,6 +157,9 @@ export type AssetCountAggregateInputType = {
   purchaseCost?: true
   warrantyEnd?: true
   location?: true
+  condition?: true
+  isBookable?: true
+  imageUrl?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -246,6 +264,9 @@ export type AssetGroupByOutputType = {
   purchaseCost: runtime.Decimal | null
   warrantyEnd: Date | null
   location: string | null
+  condition: string | null
+  isBookable: boolean
+  imageUrl: string | null
   createdAt: Date
   updatedAt: Date
   _count: AssetCountAggregateOutputType | null
@@ -286,6 +307,9 @@ export type AssetWhereInput = {
   purchaseCost?: Prisma.DecimalNullableFilter<"Asset"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
   location?: Prisma.StringNullableFilter<"Asset"> | string | null
+  condition?: Prisma.StringNullableFilter<"Asset"> | string | null
+  isBookable?: Prisma.BoolFilter<"Asset"> | boolean
+  imageUrl?: Prisma.StringNullableFilter<"Asset"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
@@ -310,6 +334,9 @@ export type AssetOrderByWithRelationInput = {
   purchaseCost?: Prisma.SortOrderInput | Prisma.SortOrder
   warrantyEnd?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
+  condition?: Prisma.SortOrderInput | Prisma.SortOrder
+  isBookable?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   category?: Prisma.CategoryOrderByWithRelationInput
@@ -337,6 +364,9 @@ export type AssetWhereUniqueInput = Prisma.AtLeast<{
   purchaseCost?: Prisma.DecimalNullableFilter<"Asset"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
   location?: Prisma.StringNullableFilter<"Asset"> | string | null
+  condition?: Prisma.StringNullableFilter<"Asset"> | string | null
+  isBookable?: Prisma.BoolFilter<"Asset"> | boolean
+  imageUrl?: Prisma.StringNullableFilter<"Asset"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
@@ -361,6 +391,9 @@ export type AssetOrderByWithAggregationInput = {
   purchaseCost?: Prisma.SortOrderInput | Prisma.SortOrder
   warrantyEnd?: Prisma.SortOrderInput | Prisma.SortOrder
   location?: Prisma.SortOrderInput | Prisma.SortOrder
+  condition?: Prisma.SortOrderInput | Prisma.SortOrder
+  isBookable?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.AssetCountOrderByAggregateInput
@@ -386,6 +419,9 @@ export type AssetScalarWhereWithAggregatesInput = {
   purchaseCost?: Prisma.DecimalNullableWithAggregatesFilter<"Asset"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.DateTimeNullableWithAggregatesFilter<"Asset"> | Date | string | null
   location?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
+  condition?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
+  isBookable?: Prisma.BoolWithAggregatesFilter<"Asset"> | boolean
+  imageUrl?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Asset"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Asset"> | Date | string
 }
@@ -401,6 +437,9 @@ export type AssetCreateInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
@@ -425,6 +464,9 @@ export type AssetUncheckedCreateInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   allocations?: Prisma.AllocationUncheckedCreateNestedManyWithoutAssetInput
@@ -445,6 +487,9 @@ export type AssetUpdateInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
@@ -469,6 +514,9 @@ export type AssetUncheckedUpdateInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.AllocationUncheckedUpdateManyWithoutAssetNestedInput
@@ -491,6 +539,9 @@ export type AssetCreateManyInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -506,6 +557,9 @@ export type AssetUpdateManyMutationInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -523,6 +577,9 @@ export type AssetUncheckedUpdateManyInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -550,6 +607,9 @@ export type AssetCountOrderByAggregateInput = {
   purchaseCost?: Prisma.SortOrder
   warrantyEnd?: Prisma.SortOrder
   location?: Prisma.SortOrder
+  condition?: Prisma.SortOrder
+  isBookable?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -571,6 +631,9 @@ export type AssetMaxOrderByAggregateInput = {
   purchaseCost?: Prisma.SortOrder
   warrantyEnd?: Prisma.SortOrder
   location?: Prisma.SortOrder
+  condition?: Prisma.SortOrder
+  isBookable?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -588,6 +651,9 @@ export type AssetMinOrderByAggregateInput = {
   purchaseCost?: Prisma.SortOrder
   warrantyEnd?: Prisma.SortOrder
   location?: Prisma.SortOrder
+  condition?: Prisma.SortOrder
+  isBookable?: Prisma.SortOrder
+  imageUrl?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -697,6 +763,10 @@ export type NullableDecimalFieldUpdateOperationsInput = {
   divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 export type AssetCreateNestedOneWithoutAllocationsInput = {
   create?: Prisma.XOR<Prisma.AssetCreateWithoutAllocationsInput, Prisma.AssetUncheckedCreateWithoutAllocationsInput>
   connectOrCreate?: Prisma.AssetCreateOrConnectWithoutAllocationsInput
@@ -778,6 +848,9 @@ export type AssetCreateWithoutDepartmentInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
@@ -800,6 +873,9 @@ export type AssetUncheckedCreateWithoutDepartmentInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   allocations?: Prisma.AllocationUncheckedCreateNestedManyWithoutAssetInput
@@ -851,6 +927,9 @@ export type AssetScalarWhereInput = {
   purchaseCost?: Prisma.DecimalNullableFilter<"Asset"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
   location?: Prisma.StringNullableFilter<"Asset"> | string | null
+  condition?: Prisma.StringNullableFilter<"Asset"> | string | null
+  isBookable?: Prisma.BoolFilter<"Asset"> | boolean
+  imageUrl?: Prisma.StringNullableFilter<"Asset"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
 }
@@ -866,6 +945,9 @@ export type AssetCreateWithoutCategoryInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   department?: Prisma.DepartmentCreateNestedOneWithoutAssetsInput
@@ -888,6 +970,9 @@ export type AssetUncheckedCreateWithoutCategoryInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   allocations?: Prisma.AllocationUncheckedCreateNestedManyWithoutAssetInput
@@ -934,6 +1019,9 @@ export type AssetCreateWithoutAllocationsInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
@@ -957,6 +1045,9 @@ export type AssetUncheckedCreateWithoutAllocationsInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAssetInput
@@ -992,6 +1083,9 @@ export type AssetUpdateWithoutAllocationsInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
@@ -1015,6 +1109,9 @@ export type AssetUncheckedUpdateWithoutAllocationsInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutAssetNestedInput
@@ -1034,6 +1131,9 @@ export type AssetCreateWithoutTransferRequestsInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
@@ -1057,6 +1157,9 @@ export type AssetUncheckedCreateWithoutTransferRequestsInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   allocations?: Prisma.AllocationUncheckedCreateNestedManyWithoutAssetInput
@@ -1092,6 +1195,9 @@ export type AssetUpdateWithoutTransferRequestsInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
@@ -1115,6 +1221,9 @@ export type AssetUncheckedUpdateWithoutTransferRequestsInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.AllocationUncheckedUpdateManyWithoutAssetNestedInput
@@ -1134,6 +1243,9 @@ export type AssetCreateWithoutBookingsInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
@@ -1157,6 +1269,9 @@ export type AssetUncheckedCreateWithoutBookingsInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   allocations?: Prisma.AllocationUncheckedCreateNestedManyWithoutAssetInput
@@ -1192,6 +1307,9 @@ export type AssetUpdateWithoutBookingsInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
@@ -1215,6 +1333,9 @@ export type AssetUncheckedUpdateWithoutBookingsInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.AllocationUncheckedUpdateManyWithoutAssetNestedInput
@@ -1234,6 +1355,9 @@ export type AssetCreateWithoutMaintenanceRequestsInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
@@ -1257,6 +1381,9 @@ export type AssetUncheckedCreateWithoutMaintenanceRequestsInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   allocations?: Prisma.AllocationUncheckedCreateNestedManyWithoutAssetInput
@@ -1292,6 +1419,9 @@ export type AssetUpdateWithoutMaintenanceRequestsInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
@@ -1315,6 +1445,9 @@ export type AssetUncheckedUpdateWithoutMaintenanceRequestsInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.AllocationUncheckedUpdateManyWithoutAssetNestedInput
@@ -1334,6 +1467,9 @@ export type AssetCreateWithoutAuditReportsInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
@@ -1357,6 +1493,9 @@ export type AssetUncheckedCreateWithoutAuditReportsInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   allocations?: Prisma.AllocationUncheckedCreateNestedManyWithoutAssetInput
@@ -1392,6 +1531,9 @@ export type AssetUpdateWithoutAuditReportsInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
@@ -1415,6 +1557,9 @@ export type AssetUncheckedUpdateWithoutAuditReportsInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.AllocationUncheckedUpdateManyWithoutAssetNestedInput
@@ -1435,6 +1580,9 @@ export type AssetCreateManyDepartmentInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1450,6 +1598,9 @@ export type AssetUpdateWithoutDepartmentInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
@@ -1472,6 +1623,9 @@ export type AssetUncheckedUpdateWithoutDepartmentInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.AllocationUncheckedUpdateManyWithoutAssetNestedInput
@@ -1493,6 +1647,9 @@ export type AssetUncheckedUpdateManyWithoutDepartmentInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1509,6 +1666,9 @@ export type AssetCreateManyCategoryInput = {
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
   location?: string | null
+  condition?: string | null
+  isBookable?: boolean
+  imageUrl?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1524,6 +1684,9 @@ export type AssetUpdateWithoutCategoryInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   department?: Prisma.DepartmentUpdateOneWithoutAssetsNestedInput
@@ -1546,6 +1709,9 @@ export type AssetUncheckedUpdateWithoutCategoryInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   allocations?: Prisma.AllocationUncheckedUpdateManyWithoutAssetNestedInput
@@ -1567,6 +1733,9 @@ export type AssetUncheckedUpdateManyWithoutCategoryInput = {
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  condition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isBookable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  imageUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1651,6 +1820,9 @@ export type AssetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   purchaseCost?: boolean
   warrantyEnd?: boolean
   location?: boolean
+  condition?: boolean
+  isBookable?: boolean
+  imageUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1676,6 +1848,9 @@ export type AssetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   purchaseCost?: boolean
   warrantyEnd?: boolean
   location?: boolean
+  condition?: boolean
+  isBookable?: boolean
+  imageUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1695,6 +1870,9 @@ export type AssetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   purchaseCost?: boolean
   warrantyEnd?: boolean
   location?: boolean
+  condition?: boolean
+  isBookable?: boolean
+  imageUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
@@ -1714,11 +1892,14 @@ export type AssetSelectScalar = {
   purchaseCost?: boolean
   warrantyEnd?: boolean
   location?: boolean
+  condition?: boolean
+  isBookable?: boolean
+  imageUrl?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type AssetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "assetTag" | "serialNumber" | "description" | "status" | "categoryId" | "departmentId" | "purchaseDate" | "purchaseCost" | "warrantyEnd" | "location" | "createdAt" | "updatedAt", ExtArgs["result"]["asset"]>
+export type AssetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "assetTag" | "serialNumber" | "description" | "status" | "categoryId" | "departmentId" | "purchaseDate" | "purchaseCost" | "warrantyEnd" | "location" | "condition" | "isBookable" | "imageUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["asset"]>
 export type AssetInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
   department?: boolean | Prisma.Asset$departmentArgs<ExtArgs>
@@ -1762,6 +1943,9 @@ export type $AssetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     purchaseCost: runtime.Decimal | null
     warrantyEnd: Date | null
     location: string | null
+    condition: string | null
+    isBookable: boolean
+    imageUrl: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["asset"]>
@@ -2206,6 +2390,9 @@ export interface AssetFieldRefs {
   readonly purchaseCost: Prisma.FieldRef<"Asset", 'Decimal'>
   readonly warrantyEnd: Prisma.FieldRef<"Asset", 'DateTime'>
   readonly location: Prisma.FieldRef<"Asset", 'String'>
+  readonly condition: Prisma.FieldRef<"Asset", 'String'>
+  readonly isBookable: Prisma.FieldRef<"Asset", 'Boolean'>
+  readonly imageUrl: Prisma.FieldRef<"Asset", 'String'>
   readonly createdAt: Prisma.FieldRef<"Asset", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Asset", 'DateTime'>
 }
