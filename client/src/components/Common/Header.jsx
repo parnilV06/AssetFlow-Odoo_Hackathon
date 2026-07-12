@@ -1,11 +1,12 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Bell, Settings } from 'lucide-react';
 import SearchInput from '../Input/SearchInput';
 import './Header.css';
 
 const Header = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const pathSegments = location.pathname.split('/').filter(Boolean);
   const isDashboard = pathSegments.length === 0 || pathSegments[0] === 'dashboard';
 
@@ -53,7 +54,11 @@ const Header = () => {
         <button className="icon-btn" aria-label="Settings">
           <Settings size={20} />
         </button>
-        <button className="notification-btn" aria-label="Notifications">
+        <button 
+          className="notification-btn" 
+          aria-label="Notifications"
+          onClick={() => navigate('/notifications')}
+        >
           <Bell size={20} />
           <span className="notification-badge">5</span>
         </button>

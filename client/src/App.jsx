@@ -11,6 +11,7 @@ import Reports from './pages/Reports/Reports';
 import ResourceBooking from './pages/ResourceBooking/ResourceBooking';
 import Maintenance from './pages/Maintenance/Maintenance';
 import Login from './pages/Login/Login';
+import Notifications from './pages/Notifications/Notifications';
 import './App.css';
 
 function App() {
@@ -52,6 +53,9 @@ function App() {
           
           {/* Resource Booking Route */}
           <Route path="resource-booking" element={<ResourceBooking />} />
+
+          {/* Notifications Route */}
+          <Route path="notifications" element={<Notifications />} />
           
           {/* Catch all redirect */}
           <Route path="*" element={<Navigate to="/organization/departments" replace />} />
