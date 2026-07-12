@@ -546,6 +546,10 @@ Hosted on **Neon PostgreSQL**
 # 👨‍💻 Contributors
 
 Built with ❤️ during a Hackathon.
+Parnil Vyawahare
+Sasmit Narnaware
+Raina George
+Aayushman Shukla
 
 ---
 
