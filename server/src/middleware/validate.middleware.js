@@ -1,0 +1,1 @@
+exports.validateMiddleware = (schema) => (req, res, next) => next();

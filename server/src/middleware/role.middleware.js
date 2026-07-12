@@ -1,0 +1,1 @@
+exports.roleMiddleware = (...roles) => (req, res, next) => next();
