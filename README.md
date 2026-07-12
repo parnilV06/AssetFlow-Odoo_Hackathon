@@ -34,6 +34,13 @@ This README reflects the state of the repository as currently checked in, not a 
 
 ---
 
+## Live Deployments
+
+- **Frontend (Vercel):** [https://asset-flow-odoo-hackathon-nine.vercel.app/](https://asset-flow-odoo-hackathon-nine.vercel.app/)
+- **Backend API (Render):** [https://assetflow-odoo-hackathon-usy2.onrender.com/](https://assetflow-odoo-hackathon-usy2.onrender.com/)
+
+---
+
 ## What is implemented today
 
 ### Backend
