@@ -26,7 +26,7 @@ const navItems = [
   { name: 'Audit', icon: ClipboardCheck, path: '/audit' },
   { name: 'Reports', icon: BarChart2, path: '/reports' },
   { name: 'Notifications', icon: Bell, path: '/notifications', badge: 3 },
-  { name: 'Settings', icon: Settings, path: '/settings', hasSubmenu: true },
+  { name: 'Settings', icon: Settings, path: '/settings' },
 ];
 
 const Sidebar = () => {
