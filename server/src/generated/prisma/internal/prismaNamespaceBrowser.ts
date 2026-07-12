@@ -136,6 +136,9 @@ export const AssetScalarFieldEnum = {
   purchaseCost: 'purchaseCost',
   warrantyEnd: 'warrantyEnd',
   location: 'location',
+  condition: 'condition',
+  isBookable: 'isBookable',
+  imageUrl: 'imageUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

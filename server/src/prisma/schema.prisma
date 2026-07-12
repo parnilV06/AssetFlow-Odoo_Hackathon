@@ -159,6 +159,9 @@ model Asset {
   purchaseCost Decimal?    @db.Decimal(12, 2)
   warrantyEnd  DateTime?
   location     String?                       // physical location / room
+  condition    String?
+  isBookable   Boolean     @default(true)
+  imageUrl     String?
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
 
