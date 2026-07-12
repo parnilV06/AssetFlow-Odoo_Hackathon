@@ -15,7 +15,6 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
 /**
  * Model Allocation
  * Immutable record of asset assignment to a user.
- * Never update — always INSERT a new row to preserve full history.
  */
 export type AllocationModel = runtime.Types.Result.DefaultSelection<Prisma.$AllocationPayload>
 

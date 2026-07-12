@@ -10,63 +10,71 @@
 */
 
 export const UserRole = {
-  Admin: 'Admin',
-  AssetManager: 'AssetManager',
-  DepartmentHead: 'DepartmentHead',
-  Employee: 'Employee'
+  ADMIN: 'ADMIN',
+  ASSET_MANAGER: 'ASSET_MANAGER',
+  DEPARTMENT_HEAD: 'DEPARTMENT_HEAD',
+  EMPLOYEE: 'EMPLOYEE'
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
+export const RecordStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE'
+} as const
+
+export type RecordStatus = (typeof RecordStatus)[keyof typeof RecordStatus]
+
+
 export const AssetStatus = {
-  Available: 'Available',
-  Allocated: 'Allocated',
-  Reserved: 'Reserved',
-  UnderMaintenance: 'UnderMaintenance',
-  Lost: 'Lost',
-  Retired: 'Retired',
-  Disposed: 'Disposed'
+  AVAILABLE: 'AVAILABLE',
+  ALLOCATED: 'ALLOCATED',
+  RESERVED: 'RESERVED',
+  UNDER_MAINTENANCE: 'UNDER_MAINTENANCE',
+  LOST: 'LOST',
+  RETIRED: 'RETIRED',
+  DISPOSED: 'DISPOSED'
 } as const
 
 export type AssetStatus = (typeof AssetStatus)[keyof typeof AssetStatus]
 
 
 export const BookingStatus = {
-  Upcoming: 'Upcoming',
-  Ongoing: 'Ongoing',
-  Completed: 'Completed',
-  Cancelled: 'Cancelled'
+  UPCOMING: 'UPCOMING',
+  ONGOING: 'ONGOING',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
 } as const
 
 export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
 
 
 export const MaintenanceStatus = {
-  Pending: 'Pending',
-  Approved: 'Approved',
-  Rejected: 'Rejected',
-  Assigned: 'Assigned',
-  InProgress: 'InProgress',
-  Resolved: 'Resolved'
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  ASSIGNED: 'ASSIGNED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  RESOLVED: 'RESOLVED'
 } as const
 
 export type MaintenanceStatus = (typeof MaintenanceStatus)[keyof typeof MaintenanceStatus]
 
 
 export const TransferStatus = {
-  Requested: 'Requested',
-  Approved: 'Approved',
-  Rejected: 'Rejected',
-  Completed: 'Completed'
+  REQUESTED: 'REQUESTED',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  COMPLETED: 'COMPLETED'
 } as const
 
 export type TransferStatus = (typeof TransferStatus)[keyof typeof TransferStatus]
 
 
 export const AuditStatus = {
-  Open: 'Open',
-  Closed: 'Closed'
+  OPEN: 'OPEN',
+  CLOSED: 'CLOSED'
 } as const
 
 export type AuditStatus = (typeof AuditStatus)[keyof typeof AuditStatus]

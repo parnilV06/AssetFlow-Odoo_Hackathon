@@ -15,7 +15,6 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
 /**
  * Model Booking
  * Time-bound reservation of an asset.
- * startTime + endTime enable overlap detection queries.
  */
 export type BookingModel = runtime.Types.Result.DefaultSelection<Prisma.$BookingPayload>
 

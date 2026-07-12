@@ -18,48 +18,53 @@ datasource db {
 // ============================================================================
 
 enum UserRole {
-  Admin
-  AssetManager
-  DepartmentHead
-  Employee
+  ADMIN
+  ASSET_MANAGER
+  DEPARTMENT_HEAD
+  EMPLOYEE
+}
+
+enum RecordStatus {
+  ACTIVE
+  INACTIVE
 }
 
 enum AssetStatus {
-  Available
-  Allocated
-  Reserved
-  UnderMaintenance
-  Lost
-  Retired
-  Disposed
+  AVAILABLE
+  ALLOCATED
+  RESERVED
+  UNDER_MAINTENANCE
+  LOST
+  RETIRED
+  DISPOSED
 }
 
 enum BookingStatus {
-  Upcoming
-  Ongoing
-  Completed
-  Cancelled
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
 }
 
 enum MaintenanceStatus {
-  Pending
-  Approved
-  Rejected
-  Assigned
-  InProgress
-  Resolved
+  PENDING
+  APPROVED
+  REJECTED
+  ASSIGNED
+  IN_PROGRESS
+  RESOLVED
 }
 
 enum TransferStatus {
-  Requested
-  Approved
-  Rejected
-  Completed
+  REQUESTED
+  APPROVED
+  REJECTED
+  COMPLETED
 }
 
 enum AuditStatus {
-  Open
-  Closed
+  OPEN
+  CLOSED
 }
 
 // ============================================================================
@@ -68,33 +73,42 @@ enum AuditStatus {
 
 /// Organizational department. Top-level grouping for users.
 model Department {
-  id        String   @id @default(uuid()) @db.Uuid
-  name      String   @unique
-  code      String   @unique            // short code, e.g. "ENG", "HR"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String       @id @default(uuid()) @db.Uuid
+  name               String       @unique
+  status             RecordStatus @default(ACTIVE)
+  parentDepartmentId String?      @db.Uuid
+  headId             String?      @db.Uuid
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
 
   // Relations
-  users User[]
+  parentDepartment Department?  @relation("DepartmentHierarchy", fields: [parentDepartmentId], references: [id])
+  childDepartments Department[] @relation("DepartmentHierarchy")
+  departmentHead   User?        @relation("DepartmentHead", fields: [headId], references: [id])
+  users            User[]       @relation("DepartmentEmployees")
+  assets           Asset[]
 
+  @@index([status], name: "idx_department_status")
   @@map("departments")
 }
 
 /// System user. Belongs to exactly one department.
 model User {
-  id           String   @id @default(uuid()) @db.Uuid
-  email        String   @unique
-  passwordHash String
-  firstName    String
-  lastName     String
-  role         UserRole @default(Employee)
-  isActive     Boolean  @default(true)
-  departmentId String   @db.Uuid
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                  String       @id @default(uuid()) @db.Uuid
+  name                String
+  email               String       @unique
+  password            String
+  role                UserRole     @default(EMPLOYEE)
+  status              RecordStatus @default(ACTIVE)
+  departmentId        String?      @db.Uuid
+  failedLoginAttempts Int          @default(0)
+  lockedUntil         DateTime?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
 
   // Relations
-  department          Department           @relation(fields: [departmentId], references: [id])
+  department          Department?          @relation("DepartmentEmployees", fields: [departmentId], references: [id])
+  headedDepartments   Department[]         @relation("DepartmentHead")
   allocations         Allocation[]
   bookings            Booking[]
   maintenanceRequests MaintenanceRequest[]
@@ -111,6 +125,7 @@ model User {
 
   @@index([departmentId], name: "idx_user_departmentId")
   @@index([role], name: "idx_user_role")
+  @@index([email], name: "idx_user_email")
   @@map("users")
 }
 
@@ -129,15 +144,15 @@ model Category {
 }
 
 /// A trackable organizational asset.
-/// IMPORTANT: Current owner is NOT stored here — derive it from the latest Allocation.
 model Asset {
   id           String      @id @default(uuid()) @db.Uuid
   name         String
   assetTag     String      @unique          // human-readable tag, e.g. "AST-00142"
   serialNumber String?     @unique          // manufacturer serial; nullable for non-serialized items
   description  String?
-  status       AssetStatus @default(Available)
+  status       AssetStatus @default(AVAILABLE)
   categoryId   String      @db.Uuid
+  departmentId String?     @db.Uuid
   purchaseDate DateTime?
   purchaseCost Decimal?    @db.Decimal(12, 2)
   warrantyEnd  DateTime?
@@ -147,6 +162,7 @@ model Asset {
 
   // Relations
   category            Category             @relation(fields: [categoryId], references: [id])
+  department          Department?          @relation(fields: [departmentId], references: [id])
   allocations         Allocation[]
   bookings            Booking[]
   maintenanceRequests MaintenanceRequest[]
@@ -154,12 +170,14 @@ model Asset {
   transferRequests    TransferRequest[]
 
   @@index([categoryId], name: "idx_asset_categoryId")
+  @@index([departmentId], name: "idx_asset_departmentId")
   @@index([status], name: "idx_asset_status")
+  @@index([assetTag], name: "idx_asset_tag")
+  @@index([serialNumber], name: "idx_asset_serial")
   @@map("assets")
 }
 
 /// Immutable record of asset assignment to a user.
-/// Never update — always INSERT a new row to preserve full history.
 model Allocation {
   id           String    @id @default(uuid()) @db.Uuid
   assetId      String    @db.Uuid
@@ -188,7 +206,7 @@ model TransferRequest {
   requesterId     String         @db.Uuid
   fromDescription String                      // textual: user name / dept at time of request
   toDescription   String                      // textual: target user name / dept
-  status          TransferStatus @default(Requested)
+  status          TransferStatus @default(REQUESTED)
   reason          String?
   approverId      String?        @db.Uuid     // who approved / rejected
   resolvedAt      DateTime?
@@ -206,7 +224,6 @@ model TransferRequest {
 }
 
 /// Time-bound reservation of an asset.
-/// startTime + endTime enable overlap detection queries.
 model Booking {
   id        String        @id @default(uuid()) @db.Uuid
   assetId   String        @db.Uuid
@@ -214,7 +231,7 @@ model Booking {
   startTime DateTime
   endTime   DateTime
   purpose   String?
-  status    BookingStatus @default(Upcoming)
+  status    BookingStatus @default(UPCOMING)
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
 
@@ -239,7 +256,7 @@ model MaintenanceRequest {
   title       String
   description String?
   priority    Int               @default(3)   // 1 = Critical … 5 = Low
-  status      MaintenanceStatus @default(Pending)
+  status      MaintenanceStatus @default(PENDING)
   resolvedAt  DateTime?
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
@@ -258,7 +275,7 @@ model MaintenanceRequest {
 model AuditCycle {
   id        String      @id @default(uuid()) @db.Uuid
   name      String                           // e.g. "Q3 2026 Full Audit"
-  status    AuditStatus @default(Open)
+  status    AuditStatus @default(OPEN)
   startDate DateTime
   endDate   DateTime?
   createdAt DateTime    @default(now())

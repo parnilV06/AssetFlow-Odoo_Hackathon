@@ -20,12 +20,7 @@ exports.signup = async (data) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const nameParts = name.trim().split(' ');
-    const firstName = nameParts[0];
-    const lastName = nameParts.slice(1).join(' ') || '';
-
     const defaultDept = await prisma.department.findFirst();
-
     if (!defaultDept) {
         return {
             status: 500,
@@ -35,12 +30,11 @@ exports.signup = async (data) => {
 
     const newUser = await prisma.user.create({
         data: {
-            firstName,
-            lastName,
+            name,
             email: lowerEmail,
-            passwordHash: hashedPassword,
-            role: "Employee",
-            isActive: true,
+            password: hashedPassword,
+            role: "EMPLOYEE",
+            status: "ACTIVE",
             departmentId: defaultDept.id
         }
     });
@@ -75,22 +69,55 @@ exports.login = async (data) => {
         };
     }
 
-    if (user.isActive === false) {
+    if (user.status !== "ACTIVE") {
         return {
             status: 401,
             data: { success: false, message: "Account is not active" }
         };
     }
 
-    // Note: lockedUntil and failedLoginAttempts do not exist in current schema, skipping lock logic
-    const isMatch = await bcrypt.compare(password, user.passwordHash);
+    if (user.lockedUntil && new Date() < user.lockedUntil) {
+        return {
+            status: 429,
+            data: { success: false, message: "Account temporarily locked. Try again later." }
+        };
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
+        const attempts = (user.failedLoginAttempts || 0) + 1;
+        let updateData = { failedLoginAttempts: attempts };
+        
+        if (attempts >= 5) {
+            updateData.lockedUntil = new Date(Date.now() + 15 * 60 * 1000);
+        }
+        
+        await prisma.user.update({
+            where: { id: user.id },
+            data: updateData
+        });
+
+        if (attempts >= 5) {
+            return {
+                status: 429,
+                data: { success: false, message: "Account temporarily locked. Try again later." }
+            };
+        }
+
         return {
             status: 401,
             data: { success: false, message: "Invalid credentials" }
         };
     }
+
+    await prisma.user.update({
+        where: { id: user.id },
+        data: {
+            failedLoginAttempts: 0,
+            lockedUntil: null
+        }
+    });
 
     const tokenPayload = {
         id: user.id,
