@@ -111,7 +111,8 @@ model User {
   headedDepartments   Department[]         @relation("DepartmentHead")
   allocations         Allocation[]
   bookings            Booking[]
-  maintenanceRequests MaintenanceRequest[]
+  maintenanceRequests MaintenanceRequest[] @relation("MaintenanceRequester")
+  assignedMaintenance MaintenanceRequest[] @relation("MaintenanceTechnician")
   notifications       Notification[]
   activityLogs        ActivityLog[]
 
@@ -268,8 +269,10 @@ model MaintenanceRequest {
   updatedAt   DateTime          @updatedAt
 
   // Relations
-  asset     Asset @relation(fields: [assetId], references: [id])
-  requester User  @relation(fields: [requesterId], references: [id])
+  asset      Asset @relation(fields: [assetId], references: [id])
+  requester  User  @relation("MaintenanceRequester", fields: [requesterId], references: [id])
+  technician User? @relation("MaintenanceTechnician", fields: [technicianId], references: [id])
+  technicianId String? @db.Uuid
 
   @@index([assetId], name: "idx_maintenance_assetId")
   @@index([requesterId], name: "idx_maintenance_requesterId")

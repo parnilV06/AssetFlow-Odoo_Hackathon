@@ -45,6 +45,7 @@ export type MaintenanceRequestMinAggregateOutputType = {
   resolvedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  technicianId: string | null
 }
 
 export type MaintenanceRequestMaxAggregateOutputType = {
@@ -58,6 +59,7 @@ export type MaintenanceRequestMaxAggregateOutputType = {
   resolvedAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
+  technicianId: string | null
 }
 
 export type MaintenanceRequestCountAggregateOutputType = {
@@ -71,6 +73,7 @@ export type MaintenanceRequestCountAggregateOutputType = {
   resolvedAt: number
   createdAt: number
   updatedAt: number
+  technicianId: number
   _all: number
 }
 
@@ -94,6 +97,7 @@ export type MaintenanceRequestMinAggregateInputType = {
   resolvedAt?: true
   createdAt?: true
   updatedAt?: true
+  technicianId?: true
 }
 
 export type MaintenanceRequestMaxAggregateInputType = {
@@ -107,6 +111,7 @@ export type MaintenanceRequestMaxAggregateInputType = {
   resolvedAt?: true
   createdAt?: true
   updatedAt?: true
+  technicianId?: true
 }
 
 export type MaintenanceRequestCountAggregateInputType = {
@@ -120,6 +125,7 @@ export type MaintenanceRequestCountAggregateInputType = {
   resolvedAt?: true
   createdAt?: true
   updatedAt?: true
+  technicianId?: true
   _all?: true
 }
 
@@ -220,6 +226,7 @@ export type MaintenanceRequestGroupByOutputType = {
   resolvedAt: Date | null
   createdAt: Date
   updatedAt: Date
+  technicianId: string | null
   _count: MaintenanceRequestCountAggregateOutputType | null
   _avg: MaintenanceRequestAvgAggregateOutputType | null
   _sum: MaintenanceRequestSumAggregateOutputType | null
@@ -256,8 +263,10 @@ export type MaintenanceRequestWhereInput = {
   resolvedAt?: Prisma.DateTimeNullableFilter<"MaintenanceRequest"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"MaintenanceRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MaintenanceRequest"> | Date | string
+  technicianId?: Prisma.UuidNullableFilter<"MaintenanceRequest"> | string | null
   asset?: Prisma.XOR<Prisma.AssetScalarRelationFilter, Prisma.AssetWhereInput>
   requester?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  technician?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
 
 export type MaintenanceRequestOrderByWithRelationInput = {
@@ -271,8 +280,10 @@ export type MaintenanceRequestOrderByWithRelationInput = {
   resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  technicianId?: Prisma.SortOrderInput | Prisma.SortOrder
   asset?: Prisma.AssetOrderByWithRelationInput
   requester?: Prisma.UserOrderByWithRelationInput
+  technician?: Prisma.UserOrderByWithRelationInput
 }
 
 export type MaintenanceRequestWhereUniqueInput = Prisma.AtLeast<{
@@ -289,8 +300,10 @@ export type MaintenanceRequestWhereUniqueInput = Prisma.AtLeast<{
   resolvedAt?: Prisma.DateTimeNullableFilter<"MaintenanceRequest"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"MaintenanceRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MaintenanceRequest"> | Date | string
+  technicianId?: Prisma.UuidNullableFilter<"MaintenanceRequest"> | string | null
   asset?: Prisma.XOR<Prisma.AssetScalarRelationFilter, Prisma.AssetWhereInput>
   requester?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  technician?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
 
 export type MaintenanceRequestOrderByWithAggregationInput = {
@@ -304,6 +317,7 @@ export type MaintenanceRequestOrderByWithAggregationInput = {
   resolvedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  technicianId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MaintenanceRequestCountOrderByAggregateInput
   _avg?: Prisma.MaintenanceRequestAvgOrderByAggregateInput
   _max?: Prisma.MaintenanceRequestMaxOrderByAggregateInput
@@ -325,6 +339,7 @@ export type MaintenanceRequestScalarWhereWithAggregatesInput = {
   resolvedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"MaintenanceRequest"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"MaintenanceRequest"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"MaintenanceRequest"> | Date | string
+  technicianId?: Prisma.UuidNullableWithAggregatesFilter<"MaintenanceRequest"> | string | null
 }
 
 export type MaintenanceRequestCreateInput = {
@@ -338,6 +353,7 @@ export type MaintenanceRequestCreateInput = {
   updatedAt?: Date | string
   asset: Prisma.AssetCreateNestedOneWithoutMaintenanceRequestsInput
   requester: Prisma.UserCreateNestedOneWithoutMaintenanceRequestsInput
+  technician?: Prisma.UserCreateNestedOneWithoutAssignedMaintenanceInput
 }
 
 export type MaintenanceRequestUncheckedCreateInput = {
@@ -351,6 +367,7 @@ export type MaintenanceRequestUncheckedCreateInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  technicianId?: string | null
 }
 
 export type MaintenanceRequestUpdateInput = {
@@ -364,6 +381,7 @@ export type MaintenanceRequestUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   asset?: Prisma.AssetUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
   requester?: Prisma.UserUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+  technician?: Prisma.UserUpdateOneWithoutAssignedMaintenanceNestedInput
 }
 
 export type MaintenanceRequestUncheckedUpdateInput = {
@@ -377,6 +395,7 @@ export type MaintenanceRequestUncheckedUpdateInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  technicianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MaintenanceRequestCreateManyInput = {
@@ -390,6 +409,7 @@ export type MaintenanceRequestCreateManyInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  technicianId?: string | null
 }
 
 export type MaintenanceRequestUpdateManyMutationInput = {
@@ -414,6 +434,7 @@ export type MaintenanceRequestUncheckedUpdateManyInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  technicianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MaintenanceRequestListRelationFilter = {
@@ -437,6 +458,7 @@ export type MaintenanceRequestCountOrderByAggregateInput = {
   resolvedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  technicianId?: Prisma.SortOrder
 }
 
 export type MaintenanceRequestAvgOrderByAggregateInput = {
@@ -454,6 +476,7 @@ export type MaintenanceRequestMaxOrderByAggregateInput = {
   resolvedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  technicianId?: Prisma.SortOrder
 }
 
 export type MaintenanceRequestMinOrderByAggregateInput = {
@@ -467,6 +490,7 @@ export type MaintenanceRequestMinOrderByAggregateInput = {
   resolvedAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  technicianId?: Prisma.SortOrder
 }
 
 export type MaintenanceRequestSumOrderByAggregateInput = {
@@ -480,10 +504,24 @@ export type MaintenanceRequestCreateNestedManyWithoutRequesterInput = {
   connect?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
 }
 
+export type MaintenanceRequestCreateNestedManyWithoutTechnicianInput = {
+  create?: Prisma.XOR<Prisma.MaintenanceRequestCreateWithoutTechnicianInput, Prisma.MaintenanceRequestUncheckedCreateWithoutTechnicianInput> | Prisma.MaintenanceRequestCreateWithoutTechnicianInput[] | Prisma.MaintenanceRequestUncheckedCreateWithoutTechnicianInput[]
+  connectOrCreate?: Prisma.MaintenanceRequestCreateOrConnectWithoutTechnicianInput | Prisma.MaintenanceRequestCreateOrConnectWithoutTechnicianInput[]
+  createMany?: Prisma.MaintenanceRequestCreateManyTechnicianInputEnvelope
+  connect?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
+}
+
 export type MaintenanceRequestUncheckedCreateNestedManyWithoutRequesterInput = {
   create?: Prisma.XOR<Prisma.MaintenanceRequestCreateWithoutRequesterInput, Prisma.MaintenanceRequestUncheckedCreateWithoutRequesterInput> | Prisma.MaintenanceRequestCreateWithoutRequesterInput[] | Prisma.MaintenanceRequestUncheckedCreateWithoutRequesterInput[]
   connectOrCreate?: Prisma.MaintenanceRequestCreateOrConnectWithoutRequesterInput | Prisma.MaintenanceRequestCreateOrConnectWithoutRequesterInput[]
   createMany?: Prisma.MaintenanceRequestCreateManyRequesterInputEnvelope
+  connect?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
+}
+
+export type MaintenanceRequestUncheckedCreateNestedManyWithoutTechnicianInput = {
+  create?: Prisma.XOR<Prisma.MaintenanceRequestCreateWithoutTechnicianInput, Prisma.MaintenanceRequestUncheckedCreateWithoutTechnicianInput> | Prisma.MaintenanceRequestCreateWithoutTechnicianInput[] | Prisma.MaintenanceRequestUncheckedCreateWithoutTechnicianInput[]
+  connectOrCreate?: Prisma.MaintenanceRequestCreateOrConnectWithoutTechnicianInput | Prisma.MaintenanceRequestCreateOrConnectWithoutTechnicianInput[]
+  createMany?: Prisma.MaintenanceRequestCreateManyTechnicianInputEnvelope
   connect?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
 }
 
@@ -501,6 +539,20 @@ export type MaintenanceRequestUpdateManyWithoutRequesterNestedInput = {
   deleteMany?: Prisma.MaintenanceRequestScalarWhereInput | Prisma.MaintenanceRequestScalarWhereInput[]
 }
 
+export type MaintenanceRequestUpdateManyWithoutTechnicianNestedInput = {
+  create?: Prisma.XOR<Prisma.MaintenanceRequestCreateWithoutTechnicianInput, Prisma.MaintenanceRequestUncheckedCreateWithoutTechnicianInput> | Prisma.MaintenanceRequestCreateWithoutTechnicianInput[] | Prisma.MaintenanceRequestUncheckedCreateWithoutTechnicianInput[]
+  connectOrCreate?: Prisma.MaintenanceRequestCreateOrConnectWithoutTechnicianInput | Prisma.MaintenanceRequestCreateOrConnectWithoutTechnicianInput[]
+  upsert?: Prisma.MaintenanceRequestUpsertWithWhereUniqueWithoutTechnicianInput | Prisma.MaintenanceRequestUpsertWithWhereUniqueWithoutTechnicianInput[]
+  createMany?: Prisma.MaintenanceRequestCreateManyTechnicianInputEnvelope
+  set?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
+  disconnect?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
+  delete?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
+  connect?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
+  update?: Prisma.MaintenanceRequestUpdateWithWhereUniqueWithoutTechnicianInput | Prisma.MaintenanceRequestUpdateWithWhereUniqueWithoutTechnicianInput[]
+  updateMany?: Prisma.MaintenanceRequestUpdateManyWithWhereWithoutTechnicianInput | Prisma.MaintenanceRequestUpdateManyWithWhereWithoutTechnicianInput[]
+  deleteMany?: Prisma.MaintenanceRequestScalarWhereInput | Prisma.MaintenanceRequestScalarWhereInput[]
+}
+
 export type MaintenanceRequestUncheckedUpdateManyWithoutRequesterNestedInput = {
   create?: Prisma.XOR<Prisma.MaintenanceRequestCreateWithoutRequesterInput, Prisma.MaintenanceRequestUncheckedCreateWithoutRequesterInput> | Prisma.MaintenanceRequestCreateWithoutRequesterInput[] | Prisma.MaintenanceRequestUncheckedCreateWithoutRequesterInput[]
   connectOrCreate?: Prisma.MaintenanceRequestCreateOrConnectWithoutRequesterInput | Prisma.MaintenanceRequestCreateOrConnectWithoutRequesterInput[]
@@ -512,6 +564,20 @@ export type MaintenanceRequestUncheckedUpdateManyWithoutRequesterNestedInput = {
   connect?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
   update?: Prisma.MaintenanceRequestUpdateWithWhereUniqueWithoutRequesterInput | Prisma.MaintenanceRequestUpdateWithWhereUniqueWithoutRequesterInput[]
   updateMany?: Prisma.MaintenanceRequestUpdateManyWithWhereWithoutRequesterInput | Prisma.MaintenanceRequestUpdateManyWithWhereWithoutRequesterInput[]
+  deleteMany?: Prisma.MaintenanceRequestScalarWhereInput | Prisma.MaintenanceRequestScalarWhereInput[]
+}
+
+export type MaintenanceRequestUncheckedUpdateManyWithoutTechnicianNestedInput = {
+  create?: Prisma.XOR<Prisma.MaintenanceRequestCreateWithoutTechnicianInput, Prisma.MaintenanceRequestUncheckedCreateWithoutTechnicianInput> | Prisma.MaintenanceRequestCreateWithoutTechnicianInput[] | Prisma.MaintenanceRequestUncheckedCreateWithoutTechnicianInput[]
+  connectOrCreate?: Prisma.MaintenanceRequestCreateOrConnectWithoutTechnicianInput | Prisma.MaintenanceRequestCreateOrConnectWithoutTechnicianInput[]
+  upsert?: Prisma.MaintenanceRequestUpsertWithWhereUniqueWithoutTechnicianInput | Prisma.MaintenanceRequestUpsertWithWhereUniqueWithoutTechnicianInput[]
+  createMany?: Prisma.MaintenanceRequestCreateManyTechnicianInputEnvelope
+  set?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
+  disconnect?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
+  delete?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
+  connect?: Prisma.MaintenanceRequestWhereUniqueInput | Prisma.MaintenanceRequestWhereUniqueInput[]
+  update?: Prisma.MaintenanceRequestUpdateWithWhereUniqueWithoutTechnicianInput | Prisma.MaintenanceRequestUpdateWithWhereUniqueWithoutTechnicianInput[]
+  updateMany?: Prisma.MaintenanceRequestUpdateManyWithWhereWithoutTechnicianInput | Prisma.MaintenanceRequestUpdateManyWithWhereWithoutTechnicianInput[]
   deleteMany?: Prisma.MaintenanceRequestScalarWhereInput | Prisma.MaintenanceRequestScalarWhereInput[]
 }
 
@@ -571,6 +637,7 @@ export type MaintenanceRequestCreateWithoutRequesterInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   asset: Prisma.AssetCreateNestedOneWithoutMaintenanceRequestsInput
+  technician?: Prisma.UserCreateNestedOneWithoutAssignedMaintenanceInput
 }
 
 export type MaintenanceRequestUncheckedCreateWithoutRequesterInput = {
@@ -583,6 +650,7 @@ export type MaintenanceRequestUncheckedCreateWithoutRequesterInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  technicianId?: string | null
 }
 
 export type MaintenanceRequestCreateOrConnectWithoutRequesterInput = {
@@ -592,6 +660,42 @@ export type MaintenanceRequestCreateOrConnectWithoutRequesterInput = {
 
 export type MaintenanceRequestCreateManyRequesterInputEnvelope = {
   data: Prisma.MaintenanceRequestCreateManyRequesterInput | Prisma.MaintenanceRequestCreateManyRequesterInput[]
+  skipDuplicates?: boolean
+}
+
+export type MaintenanceRequestCreateWithoutTechnicianInput = {
+  id?: string
+  title: string
+  description?: string | null
+  priority?: number
+  status?: $Enums.MaintenanceStatus
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  asset: Prisma.AssetCreateNestedOneWithoutMaintenanceRequestsInput
+  requester: Prisma.UserCreateNestedOneWithoutMaintenanceRequestsInput
+}
+
+export type MaintenanceRequestUncheckedCreateWithoutTechnicianInput = {
+  id?: string
+  assetId: string
+  requesterId: string
+  title: string
+  description?: string | null
+  priority?: number
+  status?: $Enums.MaintenanceStatus
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type MaintenanceRequestCreateOrConnectWithoutTechnicianInput = {
+  where: Prisma.MaintenanceRequestWhereUniqueInput
+  create: Prisma.XOR<Prisma.MaintenanceRequestCreateWithoutTechnicianInput, Prisma.MaintenanceRequestUncheckedCreateWithoutTechnicianInput>
+}
+
+export type MaintenanceRequestCreateManyTechnicianInputEnvelope = {
+  data: Prisma.MaintenanceRequestCreateManyTechnicianInput | Prisma.MaintenanceRequestCreateManyTechnicianInput[]
   skipDuplicates?: boolean
 }
 
@@ -625,6 +729,23 @@ export type MaintenanceRequestScalarWhereInput = {
   resolvedAt?: Prisma.DateTimeNullableFilter<"MaintenanceRequest"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"MaintenanceRequest"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"MaintenanceRequest"> | Date | string
+  technicianId?: Prisma.UuidNullableFilter<"MaintenanceRequest"> | string | null
+}
+
+export type MaintenanceRequestUpsertWithWhereUniqueWithoutTechnicianInput = {
+  where: Prisma.MaintenanceRequestWhereUniqueInput
+  update: Prisma.XOR<Prisma.MaintenanceRequestUpdateWithoutTechnicianInput, Prisma.MaintenanceRequestUncheckedUpdateWithoutTechnicianInput>
+  create: Prisma.XOR<Prisma.MaintenanceRequestCreateWithoutTechnicianInput, Prisma.MaintenanceRequestUncheckedCreateWithoutTechnicianInput>
+}
+
+export type MaintenanceRequestUpdateWithWhereUniqueWithoutTechnicianInput = {
+  where: Prisma.MaintenanceRequestWhereUniqueInput
+  data: Prisma.XOR<Prisma.MaintenanceRequestUpdateWithoutTechnicianInput, Prisma.MaintenanceRequestUncheckedUpdateWithoutTechnicianInput>
+}
+
+export type MaintenanceRequestUpdateManyWithWhereWithoutTechnicianInput = {
+  where: Prisma.MaintenanceRequestScalarWhereInput
+  data: Prisma.XOR<Prisma.MaintenanceRequestUpdateManyMutationInput, Prisma.MaintenanceRequestUncheckedUpdateManyWithoutTechnicianInput>
 }
 
 export type MaintenanceRequestCreateWithoutAssetInput = {
@@ -637,6 +758,7 @@ export type MaintenanceRequestCreateWithoutAssetInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   requester: Prisma.UserCreateNestedOneWithoutMaintenanceRequestsInput
+  technician?: Prisma.UserCreateNestedOneWithoutAssignedMaintenanceInput
 }
 
 export type MaintenanceRequestUncheckedCreateWithoutAssetInput = {
@@ -649,6 +771,7 @@ export type MaintenanceRequestUncheckedCreateWithoutAssetInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  technicianId?: string | null
 }
 
 export type MaintenanceRequestCreateOrConnectWithoutAssetInput = {
@@ -687,6 +810,20 @@ export type MaintenanceRequestCreateManyRequesterInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  technicianId?: string | null
+}
+
+export type MaintenanceRequestCreateManyTechnicianInput = {
+  id?: string
+  assetId: string
+  requesterId: string
+  title: string
+  description?: string | null
+  priority?: number
+  status?: $Enums.MaintenanceStatus
+  resolvedAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type MaintenanceRequestUpdateWithoutRequesterInput = {
@@ -699,6 +836,7 @@ export type MaintenanceRequestUpdateWithoutRequesterInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   asset?: Prisma.AssetUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+  technician?: Prisma.UserUpdateOneWithoutAssignedMaintenanceNestedInput
 }
 
 export type MaintenanceRequestUncheckedUpdateWithoutRequesterInput = {
@@ -711,11 +849,52 @@ export type MaintenanceRequestUncheckedUpdateWithoutRequesterInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  technicianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MaintenanceRequestUncheckedUpdateManyWithoutRequesterInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   assetId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  technicianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type MaintenanceRequestUpdateWithoutTechnicianInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  asset?: Prisma.AssetUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+  requester?: Prisma.UserUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+}
+
+export type MaintenanceRequestUncheckedUpdateWithoutTechnicianInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  assetId?: Prisma.StringFieldUpdateOperationsInput | string
+  requesterId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  priority?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.EnumMaintenanceStatusFieldUpdateOperationsInput | $Enums.MaintenanceStatus
+  resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type MaintenanceRequestUncheckedUpdateManyWithoutTechnicianInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  assetId?: Prisma.StringFieldUpdateOperationsInput | string
+  requesterId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   priority?: Prisma.IntFieldUpdateOperationsInput | number
@@ -735,6 +914,7 @@ export type MaintenanceRequestCreateManyAssetInput = {
   resolvedAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  technicianId?: string | null
 }
 
 export type MaintenanceRequestUpdateWithoutAssetInput = {
@@ -747,6 +927,7 @@ export type MaintenanceRequestUpdateWithoutAssetInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   requester?: Prisma.UserUpdateOneRequiredWithoutMaintenanceRequestsNestedInput
+  technician?: Prisma.UserUpdateOneWithoutAssignedMaintenanceNestedInput
 }
 
 export type MaintenanceRequestUncheckedUpdateWithoutAssetInput = {
@@ -759,6 +940,7 @@ export type MaintenanceRequestUncheckedUpdateWithoutAssetInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  technicianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type MaintenanceRequestUncheckedUpdateManyWithoutAssetInput = {
@@ -771,6 +953,7 @@ export type MaintenanceRequestUncheckedUpdateManyWithoutAssetInput = {
   resolvedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  technicianId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -786,8 +969,10 @@ export type MaintenanceRequestSelect<ExtArgs extends runtime.Types.Extensions.In
   resolvedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  technicianId?: boolean
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  technician?: boolean | Prisma.MaintenanceRequest$technicianArgs<ExtArgs>
 }, ExtArgs["result"]["maintenanceRequest"]>
 
 export type MaintenanceRequestSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -801,8 +986,10 @@ export type MaintenanceRequestSelectCreateManyAndReturn<ExtArgs extends runtime.
   resolvedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  technicianId?: boolean
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  technician?: boolean | Prisma.MaintenanceRequest$technicianArgs<ExtArgs>
 }, ExtArgs["result"]["maintenanceRequest"]>
 
 export type MaintenanceRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -816,8 +1003,10 @@ export type MaintenanceRequestSelectUpdateManyAndReturn<ExtArgs extends runtime.
   resolvedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  technicianId?: boolean
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  technician?: boolean | Prisma.MaintenanceRequest$technicianArgs<ExtArgs>
 }, ExtArgs["result"]["maintenanceRequest"]>
 
 export type MaintenanceRequestSelectScalar = {
@@ -831,20 +1020,24 @@ export type MaintenanceRequestSelectScalar = {
   resolvedAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  technicianId?: boolean
 }
 
-export type MaintenanceRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assetId" | "requesterId" | "title" | "description" | "priority" | "status" | "resolvedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["maintenanceRequest"]>
+export type MaintenanceRequestOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "assetId" | "requesterId" | "title" | "description" | "priority" | "status" | "resolvedAt" | "createdAt" | "updatedAt" | "technicianId", ExtArgs["result"]["maintenanceRequest"]>
 export type MaintenanceRequestInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  technician?: boolean | Prisma.MaintenanceRequest$technicianArgs<ExtArgs>
 }
 export type MaintenanceRequestIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  technician?: boolean | Prisma.MaintenanceRequest$technicianArgs<ExtArgs>
 }
 export type MaintenanceRequestIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   asset?: boolean | Prisma.AssetDefaultArgs<ExtArgs>
   requester?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  technician?: boolean | Prisma.MaintenanceRequest$technicianArgs<ExtArgs>
 }
 
 export type $MaintenanceRequestPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -852,6 +1045,7 @@ export type $MaintenanceRequestPayload<ExtArgs extends runtime.Types.Extensions.
   objects: {
     asset: Prisma.$AssetPayload<ExtArgs>
     requester: Prisma.$UserPayload<ExtArgs>
+    technician: Prisma.$UserPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -864,6 +1058,7 @@ export type $MaintenanceRequestPayload<ExtArgs extends runtime.Types.Extensions.
     resolvedAt: Date | null
     createdAt: Date
     updatedAt: Date
+    technicianId: string | null
   }, ExtArgs["result"]["maintenanceRequest"]>
   composites: {}
 }
@@ -1260,6 +1455,7 @@ export interface Prisma__MaintenanceRequestClient<T, Null = never, ExtArgs exten
   readonly [Symbol.toStringTag]: "PrismaPromise"
   asset<T extends Prisma.AssetDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AssetDefaultArgs<ExtArgs>>): Prisma.Prisma__AssetClient<runtime.Types.Result.GetResult<Prisma.$AssetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   requester<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  technician<T extends Prisma.MaintenanceRequest$technicianArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.MaintenanceRequest$technicianArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1299,6 +1495,7 @@ export interface MaintenanceRequestFieldRefs {
   readonly resolvedAt: Prisma.FieldRef<"MaintenanceRequest", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"MaintenanceRequest", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"MaintenanceRequest", 'DateTime'>
+  readonly technicianId: Prisma.FieldRef<"MaintenanceRequest", 'String'>
 }
     
 
@@ -1697,6 +1894,25 @@ export type MaintenanceRequestDeleteManyArgs<ExtArgs extends runtime.Types.Exten
    * Limit how many MaintenanceRequests to delete.
    */
   limit?: number
+}
+
+/**
+ * MaintenanceRequest.technician
+ */
+export type MaintenanceRequest$technicianArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**
