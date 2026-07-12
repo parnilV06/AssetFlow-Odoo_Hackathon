@@ -15,7 +15,6 @@ import type * as Prisma from "../internal/prismaNamespace.ts"
 /**
  * Model Asset
  * A trackable organizational asset.
- * IMPORTANT: Current owner is NOT stored here — derive it from the latest Allocation.
  */
 export type AssetModel = runtime.Types.Result.DefaultSelection<Prisma.$AssetPayload>
 
@@ -43,6 +42,7 @@ export type AssetMinAggregateOutputType = {
   description: string | null
   status: $Enums.AssetStatus | null
   categoryId: string | null
+  departmentId: string | null
   purchaseDate: Date | null
   purchaseCost: runtime.Decimal | null
   warrantyEnd: Date | null
@@ -59,6 +59,7 @@ export type AssetMaxAggregateOutputType = {
   description: string | null
   status: $Enums.AssetStatus | null
   categoryId: string | null
+  departmentId: string | null
   purchaseDate: Date | null
   purchaseCost: runtime.Decimal | null
   warrantyEnd: Date | null
@@ -75,6 +76,7 @@ export type AssetCountAggregateOutputType = {
   description: number
   status: number
   categoryId: number
+  departmentId: number
   purchaseDate: number
   purchaseCost: number
   warrantyEnd: number
@@ -101,6 +103,7 @@ export type AssetMinAggregateInputType = {
   description?: true
   status?: true
   categoryId?: true
+  departmentId?: true
   purchaseDate?: true
   purchaseCost?: true
   warrantyEnd?: true
@@ -117,6 +120,7 @@ export type AssetMaxAggregateInputType = {
   description?: true
   status?: true
   categoryId?: true
+  departmentId?: true
   purchaseDate?: true
   purchaseCost?: true
   warrantyEnd?: true
@@ -133,6 +137,7 @@ export type AssetCountAggregateInputType = {
   description?: true
   status?: true
   categoryId?: true
+  departmentId?: true
   purchaseDate?: true
   purchaseCost?: true
   warrantyEnd?: true
@@ -236,6 +241,7 @@ export type AssetGroupByOutputType = {
   description: string | null
   status: $Enums.AssetStatus
   categoryId: string
+  departmentId: string | null
   purchaseDate: Date | null
   purchaseCost: runtime.Decimal | null
   warrantyEnd: Date | null
@@ -275,6 +281,7 @@ export type AssetWhereInput = {
   description?: Prisma.StringNullableFilter<"Asset"> | string | null
   status?: Prisma.EnumAssetStatusFilter<"Asset"> | $Enums.AssetStatus
   categoryId?: Prisma.UuidFilter<"Asset"> | string
+  departmentId?: Prisma.UuidNullableFilter<"Asset"> | string | null
   purchaseDate?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
   purchaseCost?: Prisma.DecimalNullableFilter<"Asset"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
@@ -282,6 +289,7 @@ export type AssetWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
+  department?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
   allocations?: Prisma.AllocationListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
   maintenanceRequests?: Prisma.MaintenanceRequestListRelationFilter
@@ -297,6 +305,7 @@ export type AssetOrderByWithRelationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  departmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   purchaseDate?: Prisma.SortOrderInput | Prisma.SortOrder
   purchaseCost?: Prisma.SortOrderInput | Prisma.SortOrder
   warrantyEnd?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -304,6 +313,7 @@ export type AssetOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   category?: Prisma.CategoryOrderByWithRelationInput
+  department?: Prisma.DepartmentOrderByWithRelationInput
   allocations?: Prisma.AllocationOrderByRelationAggregateInput
   bookings?: Prisma.BookingOrderByRelationAggregateInput
   maintenanceRequests?: Prisma.MaintenanceRequestOrderByRelationAggregateInput
@@ -322,6 +332,7 @@ export type AssetWhereUniqueInput = Prisma.AtLeast<{
   description?: Prisma.StringNullableFilter<"Asset"> | string | null
   status?: Prisma.EnumAssetStatusFilter<"Asset"> | $Enums.AssetStatus
   categoryId?: Prisma.UuidFilter<"Asset"> | string
+  departmentId?: Prisma.UuidNullableFilter<"Asset"> | string | null
   purchaseDate?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
   purchaseCost?: Prisma.DecimalNullableFilter<"Asset"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
@@ -329,6 +340,7 @@ export type AssetWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
   category?: Prisma.XOR<Prisma.CategoryScalarRelationFilter, Prisma.CategoryWhereInput>
+  department?: Prisma.XOR<Prisma.DepartmentNullableScalarRelationFilter, Prisma.DepartmentWhereInput> | null
   allocations?: Prisma.AllocationListRelationFilter
   bookings?: Prisma.BookingListRelationFilter
   maintenanceRequests?: Prisma.MaintenanceRequestListRelationFilter
@@ -344,6 +356,7 @@ export type AssetOrderByWithAggregationInput = {
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  departmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   purchaseDate?: Prisma.SortOrderInput | Prisma.SortOrder
   purchaseCost?: Prisma.SortOrderInput | Prisma.SortOrder
   warrantyEnd?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -368,6 +381,7 @@ export type AssetScalarWhereWithAggregatesInput = {
   description?: Prisma.StringNullableWithAggregatesFilter<"Asset"> | string | null
   status?: Prisma.EnumAssetStatusWithAggregatesFilter<"Asset"> | $Enums.AssetStatus
   categoryId?: Prisma.UuidWithAggregatesFilter<"Asset"> | string
+  departmentId?: Prisma.UuidNullableWithAggregatesFilter<"Asset"> | string | null
   purchaseDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Asset"> | Date | string | null
   purchaseCost?: Prisma.DecimalNullableWithAggregatesFilter<"Asset"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.DateTimeNullableWithAggregatesFilter<"Asset"> | Date | string | null
@@ -390,6 +404,7 @@ export type AssetCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutAssetsInput
   allocations?: Prisma.AllocationCreateNestedManyWithoutAssetInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAssetInput
   maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutAssetInput
@@ -405,6 +420,7 @@ export type AssetUncheckedCreateInput = {
   description?: string | null
   status?: $Enums.AssetStatus
   categoryId: string
+  departmentId?: string | null
   purchaseDate?: Date | string | null
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
@@ -432,6 +448,7 @@ export type AssetUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutAssetsNestedInput
   allocations?: Prisma.AllocationUpdateManyWithoutAssetNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAssetNestedInput
   maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutAssetNestedInput
@@ -447,6 +464,7 @@ export type AssetUncheckedUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -468,6 +486,7 @@ export type AssetCreateManyInput = {
   description?: string | null
   status?: $Enums.AssetStatus
   categoryId: string
+  departmentId?: string | null
   purchaseDate?: Date | string | null
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
@@ -499,6 +518,7 @@ export type AssetUncheckedUpdateManyInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -525,6 +545,7 @@ export type AssetCountOrderByAggregateInput = {
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  departmentId?: Prisma.SortOrder
   purchaseDate?: Prisma.SortOrder
   purchaseCost?: Prisma.SortOrder
   warrantyEnd?: Prisma.SortOrder
@@ -545,6 +566,7 @@ export type AssetMaxOrderByAggregateInput = {
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  departmentId?: Prisma.SortOrder
   purchaseDate?: Prisma.SortOrder
   purchaseCost?: Prisma.SortOrder
   warrantyEnd?: Prisma.SortOrder
@@ -561,6 +583,7 @@ export type AssetMinOrderByAggregateInput = {
   description?: Prisma.SortOrder
   status?: Prisma.SortOrder
   categoryId?: Prisma.SortOrder
+  departmentId?: Prisma.SortOrder
   purchaseDate?: Prisma.SortOrder
   purchaseCost?: Prisma.SortOrder
   warrantyEnd?: Prisma.SortOrder
@@ -576,6 +599,48 @@ export type AssetSumOrderByAggregateInput = {
 export type AssetScalarRelationFilter = {
   is?: Prisma.AssetWhereInput
   isNot?: Prisma.AssetWhereInput
+}
+
+export type AssetCreateNestedManyWithoutDepartmentInput = {
+  create?: Prisma.XOR<Prisma.AssetCreateWithoutDepartmentInput, Prisma.AssetUncheckedCreateWithoutDepartmentInput> | Prisma.AssetCreateWithoutDepartmentInput[] | Prisma.AssetUncheckedCreateWithoutDepartmentInput[]
+  connectOrCreate?: Prisma.AssetCreateOrConnectWithoutDepartmentInput | Prisma.AssetCreateOrConnectWithoutDepartmentInput[]
+  createMany?: Prisma.AssetCreateManyDepartmentInputEnvelope
+  connect?: Prisma.AssetWhereUniqueInput | Prisma.AssetWhereUniqueInput[]
+}
+
+export type AssetUncheckedCreateNestedManyWithoutDepartmentInput = {
+  create?: Prisma.XOR<Prisma.AssetCreateWithoutDepartmentInput, Prisma.AssetUncheckedCreateWithoutDepartmentInput> | Prisma.AssetCreateWithoutDepartmentInput[] | Prisma.AssetUncheckedCreateWithoutDepartmentInput[]
+  connectOrCreate?: Prisma.AssetCreateOrConnectWithoutDepartmentInput | Prisma.AssetCreateOrConnectWithoutDepartmentInput[]
+  createMany?: Prisma.AssetCreateManyDepartmentInputEnvelope
+  connect?: Prisma.AssetWhereUniqueInput | Prisma.AssetWhereUniqueInput[]
+}
+
+export type AssetUpdateManyWithoutDepartmentNestedInput = {
+  create?: Prisma.XOR<Prisma.AssetCreateWithoutDepartmentInput, Prisma.AssetUncheckedCreateWithoutDepartmentInput> | Prisma.AssetCreateWithoutDepartmentInput[] | Prisma.AssetUncheckedCreateWithoutDepartmentInput[]
+  connectOrCreate?: Prisma.AssetCreateOrConnectWithoutDepartmentInput | Prisma.AssetCreateOrConnectWithoutDepartmentInput[]
+  upsert?: Prisma.AssetUpsertWithWhereUniqueWithoutDepartmentInput | Prisma.AssetUpsertWithWhereUniqueWithoutDepartmentInput[]
+  createMany?: Prisma.AssetCreateManyDepartmentInputEnvelope
+  set?: Prisma.AssetWhereUniqueInput | Prisma.AssetWhereUniqueInput[]
+  disconnect?: Prisma.AssetWhereUniqueInput | Prisma.AssetWhereUniqueInput[]
+  delete?: Prisma.AssetWhereUniqueInput | Prisma.AssetWhereUniqueInput[]
+  connect?: Prisma.AssetWhereUniqueInput | Prisma.AssetWhereUniqueInput[]
+  update?: Prisma.AssetUpdateWithWhereUniqueWithoutDepartmentInput | Prisma.AssetUpdateWithWhereUniqueWithoutDepartmentInput[]
+  updateMany?: Prisma.AssetUpdateManyWithWhereWithoutDepartmentInput | Prisma.AssetUpdateManyWithWhereWithoutDepartmentInput[]
+  deleteMany?: Prisma.AssetScalarWhereInput | Prisma.AssetScalarWhereInput[]
+}
+
+export type AssetUncheckedUpdateManyWithoutDepartmentNestedInput = {
+  create?: Prisma.XOR<Prisma.AssetCreateWithoutDepartmentInput, Prisma.AssetUncheckedCreateWithoutDepartmentInput> | Prisma.AssetCreateWithoutDepartmentInput[] | Prisma.AssetUncheckedCreateWithoutDepartmentInput[]
+  connectOrCreate?: Prisma.AssetCreateOrConnectWithoutDepartmentInput | Prisma.AssetCreateOrConnectWithoutDepartmentInput[]
+  upsert?: Prisma.AssetUpsertWithWhereUniqueWithoutDepartmentInput | Prisma.AssetUpsertWithWhereUniqueWithoutDepartmentInput[]
+  createMany?: Prisma.AssetCreateManyDepartmentInputEnvelope
+  set?: Prisma.AssetWhereUniqueInput | Prisma.AssetWhereUniqueInput[]
+  disconnect?: Prisma.AssetWhereUniqueInput | Prisma.AssetWhereUniqueInput[]
+  delete?: Prisma.AssetWhereUniqueInput | Prisma.AssetWhereUniqueInput[]
+  connect?: Prisma.AssetWhereUniqueInput | Prisma.AssetWhereUniqueInput[]
+  update?: Prisma.AssetUpdateWithWhereUniqueWithoutDepartmentInput | Prisma.AssetUpdateWithWhereUniqueWithoutDepartmentInput[]
+  updateMany?: Prisma.AssetUpdateManyWithWhereWithoutDepartmentInput | Prisma.AssetUpdateManyWithWhereWithoutDepartmentInput[]
+  deleteMany?: Prisma.AssetScalarWhereInput | Prisma.AssetScalarWhereInput[]
 }
 
 export type AssetCreateNestedManyWithoutCategoryInput = {
@@ -622,10 +687,6 @@ export type AssetUncheckedUpdateManyWithoutCategoryNestedInput = {
 
 export type EnumAssetStatusFieldUpdateOperationsInput = {
   set?: $Enums.AssetStatus
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
 }
 
 export type NullableDecimalFieldUpdateOperationsInput = {
@@ -706,6 +767,94 @@ export type AssetUpdateOneRequiredWithoutAuditReportsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AssetUpdateToOneWithWhereWithoutAuditReportsInput, Prisma.AssetUpdateWithoutAuditReportsInput>, Prisma.AssetUncheckedUpdateWithoutAuditReportsInput>
 }
 
+export type AssetCreateWithoutDepartmentInput = {
+  id?: string
+  name: string
+  assetTag: string
+  serialNumber?: string | null
+  description?: string | null
+  status?: $Enums.AssetStatus
+  purchaseDate?: Date | string | null
+  purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  warrantyEnd?: Date | string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
+  allocations?: Prisma.AllocationCreateNestedManyWithoutAssetInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutAssetInput
+  maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutAssetInput
+  auditReports?: Prisma.AuditReportCreateNestedManyWithoutAssetInput
+  transferRequests?: Prisma.TransferRequestCreateNestedManyWithoutAssetInput
+}
+
+export type AssetUncheckedCreateWithoutDepartmentInput = {
+  id?: string
+  name: string
+  assetTag: string
+  serialNumber?: string | null
+  description?: string | null
+  status?: $Enums.AssetStatus
+  categoryId: string
+  purchaseDate?: Date | string | null
+  purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  warrantyEnd?: Date | string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  allocations?: Prisma.AllocationUncheckedCreateNestedManyWithoutAssetInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutAssetInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedCreateNestedManyWithoutAssetInput
+  auditReports?: Prisma.AuditReportUncheckedCreateNestedManyWithoutAssetInput
+  transferRequests?: Prisma.TransferRequestUncheckedCreateNestedManyWithoutAssetInput
+}
+
+export type AssetCreateOrConnectWithoutDepartmentInput = {
+  where: Prisma.AssetWhereUniqueInput
+  create: Prisma.XOR<Prisma.AssetCreateWithoutDepartmentInput, Prisma.AssetUncheckedCreateWithoutDepartmentInput>
+}
+
+export type AssetCreateManyDepartmentInputEnvelope = {
+  data: Prisma.AssetCreateManyDepartmentInput | Prisma.AssetCreateManyDepartmentInput[]
+  skipDuplicates?: boolean
+}
+
+export type AssetUpsertWithWhereUniqueWithoutDepartmentInput = {
+  where: Prisma.AssetWhereUniqueInput
+  update: Prisma.XOR<Prisma.AssetUpdateWithoutDepartmentInput, Prisma.AssetUncheckedUpdateWithoutDepartmentInput>
+  create: Prisma.XOR<Prisma.AssetCreateWithoutDepartmentInput, Prisma.AssetUncheckedCreateWithoutDepartmentInput>
+}
+
+export type AssetUpdateWithWhereUniqueWithoutDepartmentInput = {
+  where: Prisma.AssetWhereUniqueInput
+  data: Prisma.XOR<Prisma.AssetUpdateWithoutDepartmentInput, Prisma.AssetUncheckedUpdateWithoutDepartmentInput>
+}
+
+export type AssetUpdateManyWithWhereWithoutDepartmentInput = {
+  where: Prisma.AssetScalarWhereInput
+  data: Prisma.XOR<Prisma.AssetUpdateManyMutationInput, Prisma.AssetUncheckedUpdateManyWithoutDepartmentInput>
+}
+
+export type AssetScalarWhereInput = {
+  AND?: Prisma.AssetScalarWhereInput | Prisma.AssetScalarWhereInput[]
+  OR?: Prisma.AssetScalarWhereInput[]
+  NOT?: Prisma.AssetScalarWhereInput | Prisma.AssetScalarWhereInput[]
+  id?: Prisma.UuidFilter<"Asset"> | string
+  name?: Prisma.StringFilter<"Asset"> | string
+  assetTag?: Prisma.StringFilter<"Asset"> | string
+  serialNumber?: Prisma.StringNullableFilter<"Asset"> | string | null
+  description?: Prisma.StringNullableFilter<"Asset"> | string | null
+  status?: Prisma.EnumAssetStatusFilter<"Asset"> | $Enums.AssetStatus
+  categoryId?: Prisma.UuidFilter<"Asset"> | string
+  departmentId?: Prisma.UuidNullableFilter<"Asset"> | string | null
+  purchaseDate?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
+  purchaseCost?: Prisma.DecimalNullableFilter<"Asset"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  warrantyEnd?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
+  location?: Prisma.StringNullableFilter<"Asset"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
+}
+
 export type AssetCreateWithoutCategoryInput = {
   id?: string
   name: string
@@ -719,6 +868,7 @@ export type AssetCreateWithoutCategoryInput = {
   location?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  department?: Prisma.DepartmentCreateNestedOneWithoutAssetsInput
   allocations?: Prisma.AllocationCreateNestedManyWithoutAssetInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAssetInput
   maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutAssetInput
@@ -733,6 +883,7 @@ export type AssetUncheckedCreateWithoutCategoryInput = {
   serialNumber?: string | null
   description?: string | null
   status?: $Enums.AssetStatus
+  departmentId?: string | null
   purchaseDate?: Date | string | null
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
@@ -772,25 +923,6 @@ export type AssetUpdateManyWithWhereWithoutCategoryInput = {
   data: Prisma.XOR<Prisma.AssetUpdateManyMutationInput, Prisma.AssetUncheckedUpdateManyWithoutCategoryInput>
 }
 
-export type AssetScalarWhereInput = {
-  AND?: Prisma.AssetScalarWhereInput | Prisma.AssetScalarWhereInput[]
-  OR?: Prisma.AssetScalarWhereInput[]
-  NOT?: Prisma.AssetScalarWhereInput | Prisma.AssetScalarWhereInput[]
-  id?: Prisma.UuidFilter<"Asset"> | string
-  name?: Prisma.StringFilter<"Asset"> | string
-  assetTag?: Prisma.StringFilter<"Asset"> | string
-  serialNumber?: Prisma.StringNullableFilter<"Asset"> | string | null
-  description?: Prisma.StringNullableFilter<"Asset"> | string | null
-  status?: Prisma.EnumAssetStatusFilter<"Asset"> | $Enums.AssetStatus
-  categoryId?: Prisma.UuidFilter<"Asset"> | string
-  purchaseDate?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
-  purchaseCost?: Prisma.DecimalNullableFilter<"Asset"> | runtime.Decimal | runtime.DecimalJsLike | number | string | null
-  warrantyEnd?: Prisma.DateTimeNullableFilter<"Asset"> | Date | string | null
-  location?: Prisma.StringNullableFilter<"Asset"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Asset"> | Date | string
-}
-
 export type AssetCreateWithoutAllocationsInput = {
   id?: string
   name: string
@@ -805,6 +937,7 @@ export type AssetCreateWithoutAllocationsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutAssetsInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAssetInput
   maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutAssetInput
   auditReports?: Prisma.AuditReportCreateNestedManyWithoutAssetInput
@@ -819,6 +952,7 @@ export type AssetUncheckedCreateWithoutAllocationsInput = {
   description?: string | null
   status?: $Enums.AssetStatus
   categoryId: string
+  departmentId?: string | null
   purchaseDate?: Date | string | null
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
@@ -861,6 +995,7 @@ export type AssetUpdateWithoutAllocationsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutAssetsNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAssetNestedInput
   maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutAssetNestedInput
   auditReports?: Prisma.AuditReportUpdateManyWithoutAssetNestedInput
@@ -875,6 +1010,7 @@ export type AssetUncheckedUpdateWithoutAllocationsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -901,6 +1037,7 @@ export type AssetCreateWithoutTransferRequestsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutAssetsInput
   allocations?: Prisma.AllocationCreateNestedManyWithoutAssetInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAssetInput
   maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutAssetInput
@@ -915,6 +1052,7 @@ export type AssetUncheckedCreateWithoutTransferRequestsInput = {
   description?: string | null
   status?: $Enums.AssetStatus
   categoryId: string
+  departmentId?: string | null
   purchaseDate?: Date | string | null
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
@@ -957,6 +1095,7 @@ export type AssetUpdateWithoutTransferRequestsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutAssetsNestedInput
   allocations?: Prisma.AllocationUpdateManyWithoutAssetNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAssetNestedInput
   maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutAssetNestedInput
@@ -971,6 +1110,7 @@ export type AssetUncheckedUpdateWithoutTransferRequestsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -997,6 +1137,7 @@ export type AssetCreateWithoutBookingsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutAssetsInput
   allocations?: Prisma.AllocationCreateNestedManyWithoutAssetInput
   maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutAssetInput
   auditReports?: Prisma.AuditReportCreateNestedManyWithoutAssetInput
@@ -1011,6 +1152,7 @@ export type AssetUncheckedCreateWithoutBookingsInput = {
   description?: string | null
   status?: $Enums.AssetStatus
   categoryId: string
+  departmentId?: string | null
   purchaseDate?: Date | string | null
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
@@ -1053,6 +1195,7 @@ export type AssetUpdateWithoutBookingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutAssetsNestedInput
   allocations?: Prisma.AllocationUpdateManyWithoutAssetNestedInput
   maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutAssetNestedInput
   auditReports?: Prisma.AuditReportUpdateManyWithoutAssetNestedInput
@@ -1067,6 +1210,7 @@ export type AssetUncheckedUpdateWithoutBookingsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1093,6 +1237,7 @@ export type AssetCreateWithoutMaintenanceRequestsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutAssetsInput
   allocations?: Prisma.AllocationCreateNestedManyWithoutAssetInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAssetInput
   auditReports?: Prisma.AuditReportCreateNestedManyWithoutAssetInput
@@ -1107,6 +1252,7 @@ export type AssetUncheckedCreateWithoutMaintenanceRequestsInput = {
   description?: string | null
   status?: $Enums.AssetStatus
   categoryId: string
+  departmentId?: string | null
   purchaseDate?: Date | string | null
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
@@ -1149,6 +1295,7 @@ export type AssetUpdateWithoutMaintenanceRequestsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutAssetsNestedInput
   allocations?: Prisma.AllocationUpdateManyWithoutAssetNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAssetNestedInput
   auditReports?: Prisma.AuditReportUpdateManyWithoutAssetNestedInput
@@ -1163,6 +1310,7 @@ export type AssetUncheckedUpdateWithoutMaintenanceRequestsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
   categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1189,6 +1337,7 @@ export type AssetCreateWithoutAuditReportsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   category: Prisma.CategoryCreateNestedOneWithoutAssetsInput
+  department?: Prisma.DepartmentCreateNestedOneWithoutAssetsInput
   allocations?: Prisma.AllocationCreateNestedManyWithoutAssetInput
   bookings?: Prisma.BookingCreateNestedManyWithoutAssetInput
   maintenanceRequests?: Prisma.MaintenanceRequestCreateNestedManyWithoutAssetInput
@@ -1203,6 +1352,7 @@ export type AssetUncheckedCreateWithoutAuditReportsInput = {
   description?: string | null
   status?: $Enums.AssetStatus
   categoryId: string
+  departmentId?: string | null
   purchaseDate?: Date | string | null
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
@@ -1245,6 +1395,7 @@ export type AssetUpdateWithoutAuditReportsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
+  department?: Prisma.DepartmentUpdateOneWithoutAssetsNestedInput
   allocations?: Prisma.AllocationUpdateManyWithoutAssetNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAssetNestedInput
   maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutAssetNestedInput
@@ -1252,6 +1403,64 @@ export type AssetUpdateWithoutAuditReportsInput = {
 }
 
 export type AssetUncheckedUpdateWithoutAuditReportsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  assetTag?: Prisma.StringFieldUpdateOperationsInput | string
+  serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  allocations?: Prisma.AllocationUncheckedUpdateManyWithoutAssetNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutAssetNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutAssetNestedInput
+  transferRequests?: Prisma.TransferRequestUncheckedUpdateManyWithoutAssetNestedInput
+}
+
+export type AssetCreateManyDepartmentInput = {
+  id?: string
+  name: string
+  assetTag: string
+  serialNumber?: string | null
+  description?: string | null
+  status?: $Enums.AssetStatus
+  categoryId: string
+  purchaseDate?: Date | string | null
+  purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  warrantyEnd?: Date | string | null
+  location?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type AssetUpdateWithoutDepartmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  assetTag?: Prisma.StringFieldUpdateOperationsInput | string
+  serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
+  purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  category?: Prisma.CategoryUpdateOneRequiredWithoutAssetsNestedInput
+  allocations?: Prisma.AllocationUpdateManyWithoutAssetNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutAssetNestedInput
+  maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutAssetNestedInput
+  auditReports?: Prisma.AuditReportUpdateManyWithoutAssetNestedInput
+  transferRequests?: Prisma.TransferRequestUpdateManyWithoutAssetNestedInput
+}
+
+export type AssetUncheckedUpdateWithoutDepartmentInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   assetTag?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1268,7 +1477,24 @@ export type AssetUncheckedUpdateWithoutAuditReportsInput = {
   allocations?: Prisma.AllocationUncheckedUpdateManyWithoutAssetNestedInput
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutAssetNestedInput
   maintenanceRequests?: Prisma.MaintenanceRequestUncheckedUpdateManyWithoutAssetNestedInput
+  auditReports?: Prisma.AuditReportUncheckedUpdateManyWithoutAssetNestedInput
   transferRequests?: Prisma.TransferRequestUncheckedUpdateManyWithoutAssetNestedInput
+}
+
+export type AssetUncheckedUpdateManyWithoutDepartmentInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  assetTag?: Prisma.StringFieldUpdateOperationsInput | string
+  serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
+  categoryId?: Prisma.StringFieldUpdateOperationsInput | string
+  purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type AssetCreateManyCategoryInput = {
@@ -1278,6 +1504,7 @@ export type AssetCreateManyCategoryInput = {
   serialNumber?: string | null
   description?: string | null
   status?: $Enums.AssetStatus
+  departmentId?: string | null
   purchaseDate?: Date | string | null
   purchaseCost?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Date | string | null
@@ -1299,6 +1526,7 @@ export type AssetUpdateWithoutCategoryInput = {
   location?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  department?: Prisma.DepartmentUpdateOneWithoutAssetsNestedInput
   allocations?: Prisma.AllocationUpdateManyWithoutAssetNestedInput
   bookings?: Prisma.BookingUpdateManyWithoutAssetNestedInput
   maintenanceRequests?: Prisma.MaintenanceRequestUpdateManyWithoutAssetNestedInput
@@ -1313,6 +1541,7 @@ export type AssetUncheckedUpdateWithoutCategoryInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1333,6 +1562,7 @@ export type AssetUncheckedUpdateManyWithoutCategoryInput = {
   serialNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.EnumAssetStatusFieldUpdateOperationsInput | $Enums.AssetStatus
+  departmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   purchaseDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   purchaseCost?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
   warrantyEnd?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1416,6 +1646,7 @@ export type AssetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   description?: boolean
   status?: boolean
   categoryId?: boolean
+  departmentId?: boolean
   purchaseDate?: boolean
   purchaseCost?: boolean
   warrantyEnd?: boolean
@@ -1423,6 +1654,7 @@ export type AssetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   createdAt?: boolean
   updatedAt?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  department?: boolean | Prisma.Asset$departmentArgs<ExtArgs>
   allocations?: boolean | Prisma.Asset$allocationsArgs<ExtArgs>
   bookings?: boolean | Prisma.Asset$bookingsArgs<ExtArgs>
   maintenanceRequests?: boolean | Prisma.Asset$maintenanceRequestsArgs<ExtArgs>
@@ -1439,6 +1671,7 @@ export type AssetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   description?: boolean
   status?: boolean
   categoryId?: boolean
+  departmentId?: boolean
   purchaseDate?: boolean
   purchaseCost?: boolean
   warrantyEnd?: boolean
@@ -1446,6 +1679,7 @@ export type AssetSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdAt?: boolean
   updatedAt?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  department?: boolean | Prisma.Asset$departmentArgs<ExtArgs>
 }, ExtArgs["result"]["asset"]>
 
 export type AssetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1456,6 +1690,7 @@ export type AssetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   description?: boolean
   status?: boolean
   categoryId?: boolean
+  departmentId?: boolean
   purchaseDate?: boolean
   purchaseCost?: boolean
   warrantyEnd?: boolean
@@ -1463,6 +1698,7 @@ export type AssetSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   createdAt?: boolean
   updatedAt?: boolean
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  department?: boolean | Prisma.Asset$departmentArgs<ExtArgs>
 }, ExtArgs["result"]["asset"]>
 
 export type AssetSelectScalar = {
@@ -1473,6 +1709,7 @@ export type AssetSelectScalar = {
   description?: boolean
   status?: boolean
   categoryId?: boolean
+  departmentId?: boolean
   purchaseDate?: boolean
   purchaseCost?: boolean
   warrantyEnd?: boolean
@@ -1481,9 +1718,10 @@ export type AssetSelectScalar = {
   updatedAt?: boolean
 }
 
-export type AssetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "assetTag" | "serialNumber" | "description" | "status" | "categoryId" | "purchaseDate" | "purchaseCost" | "warrantyEnd" | "location" | "createdAt" | "updatedAt", ExtArgs["result"]["asset"]>
+export type AssetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "assetTag" | "serialNumber" | "description" | "status" | "categoryId" | "departmentId" | "purchaseDate" | "purchaseCost" | "warrantyEnd" | "location" | "createdAt" | "updatedAt", ExtArgs["result"]["asset"]>
 export type AssetInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  department?: boolean | Prisma.Asset$departmentArgs<ExtArgs>
   allocations?: boolean | Prisma.Asset$allocationsArgs<ExtArgs>
   bookings?: boolean | Prisma.Asset$bookingsArgs<ExtArgs>
   maintenanceRequests?: boolean | Prisma.Asset$maintenanceRequestsArgs<ExtArgs>
@@ -1493,15 +1731,18 @@ export type AssetInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
 }
 export type AssetIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  department?: boolean | Prisma.Asset$departmentArgs<ExtArgs>
 }
 export type AssetIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   category?: boolean | Prisma.CategoryDefaultArgs<ExtArgs>
+  department?: boolean | Prisma.Asset$departmentArgs<ExtArgs>
 }
 
 export type $AssetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Asset"
   objects: {
     category: Prisma.$CategoryPayload<ExtArgs>
+    department: Prisma.$DepartmentPayload<ExtArgs> | null
     allocations: Prisma.$AllocationPayload<ExtArgs>[]
     bookings: Prisma.$BookingPayload<ExtArgs>[]
     maintenanceRequests: Prisma.$MaintenanceRequestPayload<ExtArgs>[]
@@ -1516,6 +1757,7 @@ export type $AssetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     description: string | null
     status: $Enums.AssetStatus
     categoryId: string
+    departmentId: string | null
     purchaseDate: Date | null
     purchaseCost: runtime.Decimal | null
     warrantyEnd: Date | null
@@ -1917,6 +2159,7 @@ readonly fields: AssetFieldRefs;
 export interface Prisma__AssetClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   category<T extends Prisma.CategoryDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoryDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoryClient<runtime.Types.Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  department<T extends Prisma.Asset$departmentArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Asset$departmentArgs<ExtArgs>>): Prisma.Prisma__DepartmentClient<runtime.Types.Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   allocations<T extends Prisma.Asset$allocationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Asset$allocationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AllocationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   bookings<T extends Prisma.Asset$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Asset$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   maintenanceRequests<T extends Prisma.Asset$maintenanceRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Asset$maintenanceRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaintenanceRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1958,6 +2201,7 @@ export interface AssetFieldRefs {
   readonly description: Prisma.FieldRef<"Asset", 'String'>
   readonly status: Prisma.FieldRef<"Asset", 'AssetStatus'>
   readonly categoryId: Prisma.FieldRef<"Asset", 'String'>
+  readonly departmentId: Prisma.FieldRef<"Asset", 'String'>
   readonly purchaseDate: Prisma.FieldRef<"Asset", 'DateTime'>
   readonly purchaseCost: Prisma.FieldRef<"Asset", 'Decimal'>
   readonly warrantyEnd: Prisma.FieldRef<"Asset", 'DateTime'>
@@ -2362,6 +2606,25 @@ export type AssetDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Assets to delete.
    */
   limit?: number
+}
+
+/**
+ * Asset.department
+ */
+export type Asset$departmentArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Department
+   */
+  select?: Prisma.DepartmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Department
+   */
+  omit?: Prisma.DepartmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DepartmentInclude<ExtArgs> | null
+  where?: Prisma.DepartmentWhereInput
 }
 
 /**

@@ -84,7 +84,9 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const DepartmentScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  code: 'code',
+  status: 'status',
+  parentDepartmentId: 'parentDepartmentId',
+  headId: 'headId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -94,13 +96,14 @@ export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof
 
 export const UserScalarFieldEnum = {
   id: 'id',
+  name: 'name',
   email: 'email',
-  passwordHash: 'passwordHash',
-  firstName: 'firstName',
-  lastName: 'lastName',
+  password: 'password',
   role: 'role',
-  isActive: 'isActive',
+  status: 'status',
   departmentId: 'departmentId',
+  failedLoginAttempts: 'failedLoginAttempts',
+  lockedUntil: 'lockedUntil',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -127,6 +130,7 @@ export const AssetScalarFieldEnum = {
   description: 'description',
   status: 'status',
   categoryId: 'categoryId',
+  departmentId: 'departmentId',
   purchaseDate: 'purchaseDate',
   purchaseCost: 'purchaseCost',
   warrantyEnd: 'warrantyEnd',

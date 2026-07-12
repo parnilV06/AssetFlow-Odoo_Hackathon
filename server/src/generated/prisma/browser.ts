@@ -35,13 +35,11 @@ export type Category = Prisma.CategoryModel
 /**
  * Model Asset
  * A trackable organizational asset.
- * IMPORTANT: Current owner is NOT stored here — derive it from the latest Allocation.
  */
 export type Asset = Prisma.AssetModel
 /**
  * Model Allocation
  * Immutable record of asset assignment to a user.
- * Never update — always INSERT a new row to preserve full history.
  */
 export type Allocation = Prisma.AllocationModel
 /**
@@ -52,7 +50,6 @@ export type TransferRequest = Prisma.TransferRequestModel
 /**
  * Model Booking
  * Time-bound reservation of an asset.
- * startTime + endTime enable overlap detection queries.
  */
 export type Booking = Prisma.BookingModel
 /**

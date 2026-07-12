@@ -21,14 +21,14 @@ async function main() {
   // ── Departments ──────────────────────────────────────────────────────────
   const departments = await Promise.all(
     [
-      { name: "Engineering", code: "ENG" },
-      { name: "Human Resources", code: "HR" },
-      { name: "Finance", code: "FIN" },
-      { name: "Marketing", code: "MKT" },
-      { name: "Operations", code: "OPS" },
+      { name: "Engineering" },
+      { name: "Human Resources" },
+      { name: "Finance" },
+      { name: "Marketing" },
+      { name: "Operations" },
     ].map((dept) =>
       prisma.department.upsert({
-        where: { code: dept.code },
+        where: { name: dept.name },
         update: {},
         create: dept,
       })
@@ -70,10 +70,9 @@ async function main() {
     update: {},
     create: {
       email: "admin@assetflow.local",
-      passwordHash: hashedPassword,
-      firstName: "System",
-      lastName: "Admin",
-      role: "Admin",
+      password: hashedPassword,
+      name: "System Admin",
+      role: "ADMIN",
       departmentId: departments[0].id, // Engineering
     },
   });
@@ -84,23 +83,20 @@ async function main() {
   const demoUsers = [
     {
       email: "manager@assetflow.local",
-      firstName: "Asset",
-      lastName: "Manager",
-      role: "AssetManager",
+      name: "Asset Manager",
+      role: "ASSET_MANAGER",
       departmentId: departments[4].id, // Operations
     },
     {
       email: "head@assetflow.local",
-      firstName: "Department",
-      lastName: "Head",
-      role: "DepartmentHead",
+      name: "Department Head",
+      role: "DEPARTMENT_HEAD",
       departmentId: departments[0].id, // Engineering
     },
     {
       email: "employee@assetflow.local",
-      firstName: "Jane",
-      lastName: "Employee",
-      role: "Employee",
+      name: "Jane Employee",
+      role: "EMPLOYEE",
       departmentId: departments[0].id, // Engineering
     },
   ];
@@ -111,7 +107,7 @@ async function main() {
       update: {},
       create: {
         ...u,
-        passwordHash: await bcrypt.hash("demo@123", saltRounds),
+        password: await bcrypt.hash("demo@123", saltRounds),
       },
     });
   }
