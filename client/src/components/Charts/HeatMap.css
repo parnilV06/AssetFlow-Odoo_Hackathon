@@ -1,0 +1,51 @@
+.heatmap-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: var(--spacing-sm);
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: 50px repeat(7, 1fr);
+  grid-template-rows: 30px repeat(6, 1fr);
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+}
+
+.heatmap-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label-cell {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.row-label {
+  justify-content: flex-end;
+  padding-right: var(--spacing-sm);
+}
+
+.col-label {
+  justify-content: center;
+  align-items: flex-end;
+  padding-bottom: var(--spacing-xs);
+}
+
+.data-cell {
+  border-radius: 2px;
+  transition: opacity 0.2s ease, transform 0.1s ease;
+  cursor: pointer;
+}
+
+.data-cell:hover {
+  opacity: 0.8 !important; /* Slightly fade on hover */
+  transform: scale(0.95);
+}

@@ -1,0 +1,18 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.main-content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: var(--sidebar-width); /* Fixed sidebar offset */
+}
+
+.main-content {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  flex: 1;
+  overflow-y: auto;
+}

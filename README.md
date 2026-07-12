@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="./client/src/assets/logo.png" alt="AssetFlow Logo" width="180"/>
+<img src="./client/public/logo.png" alt="AssetFlow Logo" width="180"/>
 
 # Enterprise Asset & Resource Management System
 
