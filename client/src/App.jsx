@@ -12,6 +12,7 @@ import ResourceBooking from './pages/ResourceBooking/ResourceBooking';
 import Maintenance from './pages/Maintenance/Maintenance';
 import Login from './pages/Login/Login';
 import Notifications from './pages/Notifications/Notifications';
+import Settings from './pages/Settings/Settings';
 import './App.css';
 
 function App() {
@@ -56,6 +57,9 @@ function App() {
 
           {/* Notifications Route */}
           <Route path="notifications" element={<Notifications />} />
+
+          {/* Settings Route */}
+          <Route path="settings" element={<Settings />} />
           
           {/* Catch all redirect */}
           <Route path="*" element={<Navigate to="/organization/departments" replace />} />
