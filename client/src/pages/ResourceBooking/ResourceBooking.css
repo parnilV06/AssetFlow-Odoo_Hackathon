@@ -1,0 +1,28 @@
+.booking-page-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--header-height) - var(--spacing-xl));
+}
+
+.booking-layout {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex: 1;
+  min-height: 0; /* Important for flex children to allow overflow scroll */
+  padding-bottom: var(--spacing-lg);
+}
+
+@media (max-width: 1024px) {
+  .booking-layout {
+    flex-direction: column;
+  }
+  
+  /* On tablet/mobile, we'd normally switch the panel to a drawer or top row.
+     For this MVP matching the desktop design, we'll keep it simple or allow 
+     the resources panel to stretch horizontally. */
+  .resources-panel {
+    width: 100%;
+    height: 200px; /* arbitrary height for mobile */
+    flex-shrink: 0;
+  }
+}

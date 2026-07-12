@@ -1,10 +1,9 @@
 import React from 'react';
-import logoImg from '../../assets/logo.png';
 
 const Logo = ({ width = 140, className = '', style = {} }) => {
   return (
     <img
-      src={logoImg}
+      src="/logo.png"
       alt="AssetFlow Logo"
       className={`brand-logo-img ${className}`}
       style={{

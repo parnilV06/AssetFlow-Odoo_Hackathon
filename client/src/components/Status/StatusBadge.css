@@ -1,0 +1,33 @@
+.status-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.status-active {
+  background-color: var(--status-active-bg);
+  color: var(--status-active-text);
+}
+
+.status-inactive {
+  background-color: var(--status-inactive-bg);
+  color: var(--status-inactive-text);
+}
+
+.status-pending {
+  background-color: var(--status-pending-bg);
+  color: var(--status-pending-text);
+}
+
+.status-default {
+  background-color: var(--bg-main);
+  color: var(--text-secondary);
+}
+
+.role-badge {
+  background-color: #e0f2fe; /* Light blue */
+  color: #0369a1; /* Dark blue */
+}
