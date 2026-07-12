@@ -52,12 +52,12 @@ const ResourceBooking = () => {
   weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1); // Monday
 
   useEffect(() => {
-    // Load Bookable assets
     assetService.getAll({ limit: 500 }).then(res => {
       if (res.success) {
         // filter bookable only or just take all for demo (assuming all are bookable if they are electronics/vehicles)
-        setAssets(res.data.assets);
-        if (res.data.assets.length > 0) setSelectedAssetId(res.data.assets[0].id);
+        const assetsList = res.data || [];
+        setAssets(assetsList);
+        if (assetsList.length > 0) setSelectedAssetId(assetsList[0].id);
       }
     });
 
